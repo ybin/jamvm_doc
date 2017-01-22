@@ -1,0 +1,79 @@
+digraph G {
+    rankdir=LR;
+    nodesep=0.1;
+    node [ shape="record" ];
+    
+    mainthrd [label="main_thread"];
+    
+    main_thread [
+        label = "\
+            <this>Thread|\
+            int id;|\
+            pthread_t tid;|\
+            <ee>ExecEnv *ee;|\
+            void *stack_top;|\
+            void *stack_base;|\
+            Monitor *wait_mon;|\
+            Monitor *blocked_mon;|\
+            Thread *wait_prev;|\
+            Thread *wait_next;|\
+            pthread_cond_t wait_cv;|\
+            pthread_cond_t park_cv;|\
+            pthread_mutex_t park_lock;|\
+            long long blocked_count;|\
+            long long waited_count;|\
+            Thread *prev;|\
+            <next>Thread *next;|\
+            char suspend;|\
+            char park_state;|\
+            char interrupted;|\
+            char interrupting;|\
+            char suspend_state;
+        "
+    ];
+    
+    main_env [
+        label = "\
+            <this>ExecEnv|\
+            Object *exception;|\
+            <stack_end>char *stack_end;|\
+            <stack>char *stack;|\
+            int stack_size;|\
+            <last_frame>Frame *last_frame;|\
+            Object *thread;|\
+            char overflow;
+        "
+    ];
+    
+    stack [
+        label = "\
+            <this>Java Stack|\
+            red zone\n(1KB)|
+            ......\n
+            |\n3rd frame\n
+            |<sec_ostack_content>
+            ostack of 2nd frame\n\n|\
+            {{CodePntr last_pc;|\
+            <sec_lvars>uintptr_t *lvars;|\
+            <sec_ostack>uintptr_t *ostack;|\
+            <sec_mb>MethodBlock *mb;|\
+            <sec_prev>struct frame *prev;\n(point to top frame)}|2nd\nframe}|<sec_lvars_content>
+            lvars of 2nd frame\n\n|\
+            {{CodePntr last_pc;|\
+            <top_lvars>uintptr_t *lvars;|\
+            <top_ostack>uintptr_t *ostack;|\
+            <top_mb>MethodBlock *mb;|\
+            <top_prev>struct frame *prev;\n(NULL)}|top\nframe\n(dummy)}|<mb>
+            MethodBlock
+            (dummy)\n
+        "
+    ];
+    
+    "main_thread":ee -> "main_env":this;
+    //main_env:stack -> stack:mb;
+    main_env:stack_end -> stack:this;
+    stack:top_mb -> stack:mb;
+    stack:sec_lvars -> stack:sec_lvars_content;
+    stack:sec_ostack -> stack:sec_ostack_content;
+    mainthrd-> main_thread:this;
+}

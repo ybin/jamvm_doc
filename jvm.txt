@@ -1,0 +1,36 @@
+
+scale 1.5
+@startuml jvm.png
+skinparam backgroundColor Azure
+skinparam defaultFontSize 15
+
+component [User Java Classes\ne.g. **MyMain.java**] as userClass #LightGreen
+component [User Native Library\ne.g. **libsyb.so**] as userNative #LightGreen
+
+component [Standard Classes\ne.g. **rt.jar**] as stdClass #LightSkyBlue
+component [Standard Native Library\ne.g. **libjava.so**, **libnet.so**, **libnio.so**] as stdNative #LightSkyBlue
+
+component [Java Virtual Machine\n**libjvm.so**] as jvm #Yellow
+interface "invoke interface && native interface\n**jni.h**" as jniIntf #Yellow
+interface "JVM Interface\n**jvm.h**" as jvmIntf #Yellow
+
+component [OS natives\ne.g. **pthread**, **socket**] as os #Tomato
+
+component [Java Launcher\ne.g. **java.exe**] as launcher #Silver
+
+userClass --> userNative
+userNative --> jniIntf
+userClass -right-> stdClass
+stdClass --> stdNative
+stdNative --> jniIntf
+stdNative --> jvmIntf
+
+jvm .. jniIntf : implement
+jvm .right. jvmIntf : implement
+
+jvm -up-> os
+userNative --> os
+stdNative --> os
+
+launcher -right-> jniIntf
+@enduml
