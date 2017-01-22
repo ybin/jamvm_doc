@@ -14,11 +14,24 @@ digraph G {
 
 	table [
 		label = "\
-			{<table>hash|void *data}|\
-			{hash|void *data}|\
-			{hash|void  *data}
+			<table>......|\
+			{hash(classname)|<data>void *data}|\
+			{hash(classname)|void *data}|\
+			{hash(classname)|void *data}|\
+			......
 		"
 	];
 
+	class [
+		label = "\
+			<this>Class|\
+			{{uintptr_t lock;|Class *class;}|class\nheader}|\
+			{{
+			a|b
+			}|class\nblock}
+		"
+	]
+
 	boot_class_tab:tab -> table:table;
+	table:data -> class:this;
 }
