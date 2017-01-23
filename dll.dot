@@ -1,0 +1,36 @@
+digraph G {
+	rankdir=LR;
+	node [shape="record"];
+
+	dll_tab [
+		label = "\
+			<this>DLL Hash Table|\
+			<tab>HashEntry *hash_table;|\
+			int hash_size;|\
+			int hash_count;|\
+			VMLock lock;
+		"
+	];
+
+	table [
+		label = "\
+			<table>......|\
+			{hash(fullpath)|<data>void *data}|\
+			{hash(fullpath)|void *data}|\
+			{hash(fullpath)|void *data}|\
+			......
+		"
+	];
+
+	dll_entry [
+	    label = "\
+			  <this>DLLEntry|\
+			  char *name;\n(full path)|\
+			  void *handle;\n(dl handle)|\
+			  Object *loader;\n(class loader)		  
+		"
+	];
+
+	dll_tab:tab -> table:table;
+	table:data -> dll_entry:this;
+}

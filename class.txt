@@ -53,7 +53,8 @@ digraph G {
 				char *bootstrap_methods;|\
 				ExtraAttributes *extra_attributes;|\
 				ConstantPool constant_pool;|\
-				{{int dim; | Class *element_class;}|\
+				{{int dim;|\
+				  Class *element_class;}|\
 				 {int refs_offsets_size;|\
 				  u2 *inner_classes;|\
 				  <fields>FieldBlock *fields;|\
