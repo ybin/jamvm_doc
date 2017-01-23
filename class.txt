@@ -1,0 +1,111 @@
+digraph G {
+	rankdir=LR;
+	node [shape="record"];
+
+	boot_class_tab [
+		label = "\
+			<this>Boot Class Hash Table|\
+			<tab>HashEntry *hash_table;|\
+			int hash_size;|\
+			int hash_count;|\
+			VMLock lock;
+		"
+	];
+
+	table [
+		label = "\
+			<table>......|\
+			{hash(classname)|<data>void *data}|\
+			{hash(classname)|void *data}|\
+			{hash(classname)|void *data}|\
+			......
+		"
+	];
+
+	class [
+		label = "\
+			<this>Class|\
+			{{uintptr_t lock;|Class *class;}|class\nheader}|\
+			{{
+				u1 state;|\
+				u2 flags;|\
+				u2 access_flags;|\
+				u2 declaring_class;|\
+				u2 enclosing_class;|\
+				u2 enclosing_method;|\
+				u2 inner_access_flags;|\
+				u2 fields_count;|\
+				u2 methods_count;|\
+				u2 interfaces_count;|\
+				u2 inner_class_count;|\
+				u2 constant_pool_count;|\
+				int object_size;|\
+				int method_table_size;|\
+				int imethod_table_size;|\
+				int initing_tid;|\
+				char *name;|\
+				char *signature;|\
+				char *source_file_name;|\
+				Class *super;|\
+				Class **interfaces;|\
+				MethodBlock **method_table;|\
+				ITableEntry *imethod_table;|\
+				char *bootstrap_methods;|\
+				ExtraAttributes *extra_attributes;|\
+				ConstantPool constant_pool;|\
+				{{int dim; | Class *element_class;}|\
+				 {int refs_offsets_size;|\
+				  u2 *inner_classes;|\
+				  <fields>FieldBlock *fields;|\
+				  <methods>MethodBlock *methods|\
+				  RefsOffsetsEntry *refs_offsets_table;}}
+			}|c\nl\na\ns\ns\n\nb\nl\no\nc\nk}
+		"
+	];
+
+	methodblock [
+		   label = "\
+		   	 <this>MethodBlock|\
+			 Class *class;|\
+			 char *name;|\
+			 char *type;|\
+			 char *signature;|\
+			 u1 state;|\
+			 u1 flags;|\
+			 u2 access_flags;|\
+			 u2 max_stack;|\
+			 u2 max_locals;|\
+			 u2 args_count;|\
+			 u2 throw_table_size;|\
+			 u2 *throw_table;|\
+			 void *code;|\
+			 int code_size;|\
+			 int method_table_index;|\
+			 {{u2 exception_table_size;|\
+			   u2 line_no_table_size;|\
+			   ExceptionTableEntry *exception_table;|\
+			   LineNoTableEntry *line_no_table;}|\
+			  {char *simple_sig;|\
+			   int native_extra_arg;|\
+			   NativeMethod native_invoker;}}
+		   "
+	];
+
+	fieldblock [
+		   label = "\
+		   	 <this>FieldBlock|\
+			 Class *class;|\
+			 char *name;|\
+			 char *type;|\
+			 char *signature;|\
+			 u2 access_flags;|\
+			 u2 constant;|\
+			 char data[8]
+		   "
+	]
+
+	boot_class_tab:tab -> table:table;
+	table:data -> class:this;
+	class:methods -> methodblock:this;
+	class:fields -> fieldblock:this;
+}
