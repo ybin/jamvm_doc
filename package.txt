@@ -1,0 +1,32 @@
+digraph G {
+	rankdir=LR;
+	node [shape="record"];
+
+    pkg_tab [
+		label = "<this>Boot Package Hash Table|\
+        <tab>HashEntry *hash_table;|\
+        int hash_size;|\
+        int hash_count;|\
+        VMLock lock;"
+	];
+
+	table [
+		label = "\
+            <table>......|\
+            {hash(pkgname)|<data>void *data}|\
+            {hash(pkgname)|void *data}|\
+            {hash(pkgname)|void *data}|\
+			......"
+	];
+
+	pkg_entry [
+	    label = "\
+            <this>PackageEntry|\
+            int index;
+            (index of boot path)|\
+			char name[0];"
+	];
+
+	pkg_tab:tab -> table:table;
+	table:data -> pkg_entry:this;
+}

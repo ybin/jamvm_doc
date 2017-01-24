@@ -1,0 +1,14 @@
+digraph G {
+    rankdir=LR;
+	node [shape="record"];
+    
+    bootclasspath0 [
+        label = "{\
+            {BCPEntry(0)|char *path;|ZipFile *zip;}|\
+            {BCPEntry(1)|char *path;|ZipFile *zip;}|\
+            ...... ......|\
+            {BCPEntry(N)|char *path;|ZipFile *zip;}}"
+    ];
+    
+    bootclasspath -> bootclasspath0;
+}

@@ -101,7 +101,7 @@ digraph G {
 			 char *signature;|\
 			 u2 access_flags;|\
 			 u2 constant;|\
-			 char data[8]
+			 char data[8];\n (offset or static value)
 		   "
 	]
 
