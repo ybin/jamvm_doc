@@ -1,0 +1,127 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,backgrounds,matrix,fit,decorations.pathreplacing}
+\begin{document}
+\begin{tikzpicture}
+    [table/.style 2 args={
+        draw,
+        inner sep=0pt,
+        matrix of nodes,
+        nodes in empty cells,
+        nodes={
+        draw,
+            font=\ttfamily,
+            align=center,
+            text width=#1,
+            outer sep=0pt,
+            inner sep=0.3em,
+            minimum height=1.6em
+        },
+        label={[align=center]90:\bf{#2}}
+    },
+    table/.default={10cm}{},
+    right brace/.style 2 args={
+        decorate,
+        decoration={brace,amplitude=#1,raise=#2}
+    },
+    right brace/.default={8pt}{2pt},
+    right note/.style={right=#1},
+    right note/.default={0.3cm},
+    left note/.style={left=#1},
+    left note/.default={0.3cm},
+    left brace/.style 2 args={
+        decorate,
+        decoration={brace,amplitude=#1,raise=#2,mirror}
+    },
+    left brace/.default={8pt}{2pt},
+    right addr note/.style={right=#1},
+    right addr note/.default={0.5cm},
+    left addr note/.style={left=#1},
+    left addr note/.default={0.5cm},
+    arrow/.style={>=stealth',->},
+    blank cell/.style={fill=white,minimum height=1cm},
+    non blank cell/.style={fill=cyan!30,minimum height=#1}]
+
+    %%% content
+    \node (mainThread) [draw] {$main\_thread$};
+    
+    \matrix (thread) [table={5cm}{Thread}, right of=mainThread, xshift=5cm] {
+        ||{int id;}\\
+        ||{pthread\_t tid;}\\
+        |(ee)|{ExecEnv *ee;}\\
+        ||{void *stack\_top;}\\
+        ||{void *stack\_end;}\\
+        ||{Monitor *wait\_mon;}\\
+        ||{Monitor *blocked\_mon;}\\
+        ||{Thread *wait\_prev;}\\
+        ||{Thread *wait\_next;}\\
+        ||{pthread\_cond\_t wait\_cv;}\\
+        ||{pthread\_cont\_t park\_cv;}\\
+        ||{pthread\_mutex\_t park\_lock;}\\
+        ||{long long blocked\_count;}\\
+        ||{long long waited\_count;}\\
+        |[fill=gray]|{Thread *prev;}\\
+        |[fill=gray]|{Thread *next;}\\
+        ||{char suspend;}\\
+        ||{char park\_state;}\\
+        ||{char interrupted;}\\
+        ||{char interrupting;}\\
+        ||{char suspend\_state;}\\
+    };
+    
+    \matrix (thread2) [table={5cm}{Thread}, below of=thread, yshift=-8cm] {
+        ||{......}\\
+        |[fill=gray]|{Thread *prev;}\\
+        |[fill=gray]|{Thread *next;}\\
+        ||{......}\\
+    };
+    
+    \matrix (thread3) [table={5cm}{Thread}, below of=thread2, yshift=-3cm] {
+        ||{......}\\
+        |[fill=gray]|{Thread *prev;}\\
+        |[fill=gray]|{Thread *next;}\\
+        ||{......}\\
+    };
+    
+    \matrix (execEnv) [table={5cm}{ExecEnv}, right of=thread, xshift=6cm] {
+        ||{Object *exception;}\\
+        |(stack end)|{char *stack\_end;}\\
+        |(stack)|{char *stack;}\\
+        ||{int stack\_size;}\\
+        |(last frame)|{Frame *last\_frame;}\\
+        ||{Object *thread;}\\
+        ||{char overflow;}\\
+    };
+    
+    \matrix (javaStack) [table={5cm}{Java Stack}, right of=execEnv, xshift=6cm] {
+        |[fill=red](red zone)|{red zone\\(1KB)}\\
+        ||{\\[.5em]......\\[.5em]\ }\\
+        |[fill=yellow](third frame)|{\\[1em]3rd frame\\[1em]\ }\\
+        |[fill=green](second ostack content)|{\\[.8em]operand stack\\ of 2nd frame\\[.8em]\ }\\
+        |[fill=green]|{CodePntr last\_pc;}\\
+        |[fill=green](second ostack)|{uintptr\_t *ostack;}\\
+        |[fill=green](second lvars)|{uintptr\_t *lvars;}\\
+        |[fill=green]|{MethodBlock *mb;}\\
+        |[fill=green](second prev)|{struct frame *prev;}\\
+        |[fill=green](second lvars content)|{\\[.8em]local variables\\ of 2nd frame\\[.8em]\ }\\
+        |[fill=cyan]|{CodePntr last\_pc;}\\
+        |[fill=cyan](first ostack)|{uintptr\_t *ostack;}\\
+        |[fill=cyan](first lvars)|{uintptr\_t *lvars;}\\
+        |[fill=cyan](first mb)|{MethodBlock *mb;}\\
+        |[fill=cyan](first prev)|{struct frame *prev;\\(NULL)}\\
+        ||{\\[.5em]MethodBlock(dummy)\\[.5em]\ }\\
+    };
+    
+    %% lines
+    \draw[arrow] (ee.east) to[out=0,in=180] (execEnv-1-1.west);
+    \draw[arrow] (stack end.east) to[out=60,in=180] (red zone.south west);
+    \draw[arrow] (stack.east) to[out=-60,in=180] (javaStack.south west);
+    \draw[arrow] (last frame.east) to[out=0,in=180] (second prev.south west);
+    \draw[arrow,draw=red] (second ostack.west) to[out=180,in=180] (second ostack content.south west);
+    \draw[arrow,draw=red] (second lvars.west) to[out=220,in=130] (second lvars content.south west);
+    \draw[arrow] (second prev.west) to[out=220,in=130] (first prev.south west);
+    \draw[right brace] (second ostack content.north east) -- node[right note]{2nd frame} (second lvars content.south east);
+    \draw[right brace] (second lvars content.south east) -- node[right note]{1st frame} (first prev.south east);
+    \draw[arrow] (mainThread.east) to[out=0,in=180] (thread-1-1.west);
+\end{tikzpicture}
+\end{document}

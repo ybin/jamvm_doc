@@ -1,0 +1,99 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,backgrounds,matrix,fit,decorations.pathreplacing, fit}
+\begin{document}
+\newcommand{\sybwd}{32em}
+\newcommand{\sybht}{2em}
+\newcommand{\sybleftwd}{12em}
+\newcommand{\sybleftht}{5em}
+\newcommand{\sybrightwd}{20em}
+\newcommand{\sybrightht}{2em}
+\begin{tikzpicture}[
+    node distance=0,
+    outer sep=0,
+    inner sep=0,
+    table/.style 2 args={
+        draw,
+        rectangle,
+        inner sep=0pt,
+        matrix of nodes,
+        nodes in empty cells,
+        nodes={
+            draw,
+            font=\ttfamily,
+            align=center,
+            text width=#1,
+            outer sep=0pt,
+            inner sep=0.3em,
+            minimum height=1.6em
+        },
+        label={[align=center]90:\bf{#2}}
+    },
+    table/.default={10cm}{},
+    right brace/.style 2 args={
+        decorate,
+        decoration={brace,amplitude=#1,raise=#2}
+    },
+    right brace/.default={8pt}{2pt},
+    right note/.style={right=#1},
+    right note/.default={0.3cm},
+    left note/.style={left=#1},
+    left note/.default={0.3cm},
+    left brace/.style 2 args={
+        decorate,
+        decoration={brace,amplitude=#1,raise=#2,mirror}
+    },
+    left brace/.default={8pt}{2pt},
+    right addr note/.style={right=#1},
+    right addr note/.default={0.5cm},
+    left addr note/.style={left=#1},
+    left addr note/.default={0.5cm},
+    arrow/.style={>=stealth',->},
+    fixed node/.style 2 args={
+        draw,
+        font=\ttfamily,
+        rectangle,
+        minimum width=#1,
+        minimum height=#2
+    },
+    blank cell/.style={fill=white,minimum height=1cm},
+    non blank cell/.style={fill=cyan!30,minimum height=#1}]
+
+    \node[fixed node={\sybwd}{\sybht}](a0){uintptr\_t lock;};
+    \node[fixed node={\sybwd}{\sybht},below=of a0](a1){Class *class;};
+    \node[fixed node={\sybwd}{\sybht},below=of a1](a2){u1 state;};
+    \node[fixed node={\sybwd}{\sybht},below=of a2](a3){u2 access\_flags;};
+    \node[fixed node={\sybwd}{\sybht},below=of a3](a4){u2 declaring\_class;};
+    \node[fixed node={\sybwd}{\sybht},below=of a4](a5){u2 enclosing\_class;};
+    \node[fixed node={\sybwd}{\sybht},below=of a5](a6){u2 enclosing\_method;};
+    \node[fixed node={\sybwd}{\sybht},below=of a6](a7){u2 inner\_access\_flags;};
+    \node[fixed node={\sybwd}{\sybht},below=of a7](a8){u2 fields\_count;};
+    \node[fixed node={\sybwd}{\sybht},below=of a8](a9){u2 methods\_count;};
+    \node[fixed node={\sybwd}{\sybht},below=of a9](a10){u2 interfaces\_count;};
+    \node[fixed node={\sybwd}{\sybht},below=of a10](a11){u2 inner\_class\_count;};
+    \node[fixed node={\sybwd}{\sybht},below=of a11](a12){u2 constant\_pool\_count;};
+    \node[fixed node={\sybwd}{\sybht},below=of a12](a13){int object\_size;};
+    \node[fixed node={\sybwd}{\sybht},below=of a13](a14){int method\_table\_size;};
+    \node[fixed node={\sybwd}{\sybht},below=of a14](a15){int imethod\_table\_size;};
+    \node[fixed node={\sybwd}{\sybht},below=of a15](a16){int initing\_tid;};
+    \node[fixed node={\sybwd}{\sybht},below=of a16](a17){char *name;};
+    \node[fixed node={\sybwd}{\sybht},below=of a17](a18){char *signature;};
+    \node[fixed node={\sybwd}{\sybht},below=of a18](a19){char *source\_file\_name;};
+    \node[fixed node={\sybwd}{\sybht},below=of a19](a20){Class *super;};
+    \node[fixed node={\sybwd}{\sybht},below=of a20](a21){Class **interfaces;};
+    \node[fixed node={\sybwd}{\sybht},below=of a21](a22){MethodBlock **method\_table;};
+    \node[fixed node={\sybwd}{\sybht},below=of a22](a23){ITableEntry *imethod\_table;};
+    \node[fixed node={\sybwd}{\sybht},below=of a23](a24){char *bootstrap\_methods;};
+    \node[fixed node={\sybwd}{\sybht},below=of a24](a25){ExtraAttributes *extra\_attributes;};
+    \node[fixed node={\sybwd}{\sybht},below=of a25](a26){ConstantPool constant\_pool;};
+    
+    \node[fixed node={\sybleftwd}{\sybleftht},anchor=north west](a100) at (a26.south west){int dimension;};
+    \node[fixed node={\sybleftwd}{\sybleftht},below=of a100]    (a101){Class *element\_class;};
+    
+    \node[fixed node={\sybrightwd}{\sybrightht},anchor=north west]      (a200) at (a100.north east){u2 *inner\_classes;};
+    \node[fixed node={\sybrightwd}{\sybrightht},below=of a200]          (a201){FieldBlock *fields;};
+    \node[fixed node={\sybrightwd}{\sybrightht},below=of a201]          (a202){MethodBlock *methods;};
+    \node[fixed node={\sybrightwd}{\sybrightht},below=of a202]          (a203){int refs\_offsets\_size;};
+    \node[fixed node={\sybrightwd}{\sybrightht},below=of a203]          (a204){RefsOffsetsEntry *refs\_offsets\_table;};
+\end{tikzpicture}
+\end{document}
