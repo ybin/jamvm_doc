@@ -9,9 +9,6 @@
 \newcommand{\sybrightwd}{20em}
 \newcommand{\sybrightht}{2em}
 \begin{tikzpicture}[
-    node distance=0,
-    outer sep=0,
-    inner sep=0,
     table/.style 2 args={
         draw,
         rectangle,
@@ -50,6 +47,9 @@
     left addr note/.default={0.5cm},
     arrow/.style={>=stealth',->},
     fixed node/.style 2 args={
+        node distance=0,
+        outer sep=0,
+        inner sep=0,
         draw,
         font=\ttfamily,
         rectangle,
@@ -59,8 +59,26 @@
     blank cell/.style={fill=white,minimum height=1cm},
     non blank cell/.style={fill=cyan!30,minimum height=#1}]
 
-    \node[fixed node={\sybwd}{\sybht}](a0){uintptr\_t lock;};
-    \node[fixed node={\sybwd}{\sybht},below=of a0](a1){Class *class;};
+
+    \matrix (hashtable) [table={4cm}{Boot Class Hash Table}] {
+      ||{HashEntry *hash\_table;}\\
+      ||{int hash\_size;}\\
+      ||{int hash\_count;}\\
+      ||{VMLock lock;}\\
+    };
+    
+    
+    \node[fixed node={4cm}{2em}, right=of hashtable-1-1, xshift=1.5cm](data){...};
+    \node[fixed node={4cm}{2em}, below=of data](data01){hash(classname)};
+    \node[fixed node={4cm}{2em}, below=of data01](data02){...};
+    \node[fixed node={4cm}{2em}, anchor=north west,](data1) at(data.north east){...};
+    \node[fixed node={4cm}{2em}, below=of data1](data11){void *data;};
+    \node[fixed node={4cm}{2em}, below=of data11](data12){...};
+
+
+    \node[rectangle,inner sep=1em,right=5cm of data1, xshift=2cm, yshift=2cm](title){Class};
+    \node[fixed node={\sybwd}{\sybht},fill=cyan,below=of title](a0){uintptr\_t lock;};
+    \node[fixed node={\sybwd}{\sybht},fill=cyan,below=of a0](a1){Class *class;};
     \node[fixed node={\sybwd}{\sybht},below=of a1](a2){u1 state;};
     \node[fixed node={\sybwd}{\sybht},below=of a2](a3){u2 access\_flags;};
     \node[fixed node={\sybwd}{\sybht},below=of a3](a4){u2 declaring\_class;};
@@ -95,5 +113,12 @@
     \node[fixed node={\sybrightwd}{\sybrightht},below=of a201]          (a202){MethodBlock *methods;};
     \node[fixed node={\sybrightwd}{\sybrightht},below=of a202]          (a203){int refs\_offsets\_size;};
     \node[fixed node={\sybrightwd}{\sybrightht},below=of a203]          (a204){RefsOffsetsEntry *refs\_offsets\_table;};
+    
+    
+    \draw[arrow] (hashtable-1-1.east) to[out=0,in=180] (data01.west);
+    \draw[arrow] (data11.east) to[out=0,in=180] (a0.west);
+    \draw[right brace] (a0.north east) -- node[right note]{class header} (a1.south east);
 \end{tikzpicture}
 \end{document}
+
+
