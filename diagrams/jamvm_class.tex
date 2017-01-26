@@ -20,9 +20,9 @@
 
     %%% hashtable
     \matrix (hashtable) [table={4cm}{Boot Class Hash Table}] {
-      ||{HashEntry *hash\_table;}\\
-      ||{int hash\_size;}\\
-      ||{int hash\_count;}\\
+      ||{HashEntry *hash_table;}\\
+      ||{int hash_size;}\\
+      ||{int hash_count;}\\
       ||{VMLock lock;}\\
     };
     
@@ -38,42 +38,42 @@
 
     %%% Class
     \node[rectangle,inner sep=1em,right=5cm of data1, xshift=2cm, yshift=2cm](title){Class};
-    \node[fixed node={\sybwd}{\sybht},fill=cyan,below=of title](a0){uintptr\_t lock;};
+    \node[fixed node={\sybwd}{\sybht},fill=cyan,below=of title](a0){uintptr_t lock;};
     \node[fixed node={\sybwd}{\sybht},fill=cyan,below=of a0](a1){Class *class;};
     \node[fixed node={\sybwd}{\sybht},below=of a1](a2){u1 state;};
-    \node[fixed node={\sybwd}{\sybht},below=of a2](a3){u2 access\_flags;};
-    \node[fixed node={\sybwd}{\sybht},below=of a3](a4){u2 declaring\_class;};
-    \node[fixed node={\sybwd}{\sybht},below=of a4](a5){u2 enclosing\_class;};
-    \node[fixed node={\sybwd}{\sybht},below=of a5](a6){u2 enclosing\_method;};
-    \node[fixed node={\sybwd}{\sybht},below=of a6](a7){u2 inner\_access\_flags;};
-    \node[fixed node={\sybwd}{\sybht},below=of a7](a8){u2 fields\_count;};
-    \node[fixed node={\sybwd}{\sybht},below=of a8](a9){u2 methods\_count;};
-    \node[fixed node={\sybwd}{\sybht},below=of a9](a10){u2 interfaces\_count;};
-    \node[fixed node={\sybwd}{\sybht},below=of a10](a11){u2 inner\_class\_count;};
-    \node[fixed node={\sybwd}{\sybht},below=of a11](a12){u2 constant\_pool\_count;};
-    \node[fixed node={\sybwd}{\sybht},below=of a12](a13){int object\_size;};
-    \node[fixed node={\sybwd}{\sybht},below=of a13](a14){int method\_table\_size;};
-    \node[fixed node={\sybwd}{\sybht},below=of a14](a15){int imethod\_table\_size;};
-    \node[fixed node={\sybwd}{\sybht},below=of a15](a16){int initing\_tid;};
+    \node[fixed node={\sybwd}{\sybht},below=of a2](a3){u2 access_flags;};
+    \node[fixed node={\sybwd}{\sybht},below=of a3](a4){u2 declaring_class;};
+    \node[fixed node={\sybwd}{\sybht},below=of a4](a5){u2 enclosing_class;};
+    \node[fixed node={\sybwd}{\sybht},below=of a5](a6){u2 enclosing_method;};
+    \node[fixed node={\sybwd}{\sybht},below=of a6](a7){u2 inner_access_flags;};
+    \node[fixed node={\sybwd}{\sybht},below=of a7](a8){u2 fields_count;};
+    \node[fixed node={\sybwd}{\sybht},below=of a8](a9){u2 methods_count;};
+    \node[fixed node={\sybwd}{\sybht},below=of a9](a10){u2 interfaces_count;};
+    \node[fixed node={\sybwd}{\sybht},below=of a10](a11){u2 inner_class_count;};
+    \node[fixed node={\sybwd}{\sybht},below=of a11](a12){u2 constant_pool_count;};
+    \node[fixed node={\sybwd}{\sybht},below=of a12](a13){int object_size;};
+    \node[fixed node={\sybwd}{\sybht},below=of a13](a14){int method_table_size;};
+    \node[fixed node={\sybwd}{\sybht},below=of a14](a15){int imethod_table_size;};
+    \node[fixed node={\sybwd}{\sybht},below=of a15](a16){int initing_tid;};
     \node[fixed node={\sybwd}{\sybht},below=of a16](a17){char *name;};
     \node[fixed node={\sybwd}{\sybht},below=of a17](a18){char *signature;};
-    \node[fixed node={\sybwd}{\sybht},below=of a18](a19){char *source\_file\_name;};
+    \node[fixed node={\sybwd}{\sybht},below=of a18](a19){char *source_file_name;};
     \node[fixed node={\sybwd}{\sybht},below=of a19](a20){Class *super;};
     \node[fixed node={\sybwd}{\sybht},below=of a20](a21){Class **interfaces;};
-    \node[fixed node={\sybwd}{\sybht},below=of a21](a22){MethodBlock **method\_table;};
-    \node[fixed node={\sybwd}{\sybht},below=of a22](a23){ITableEntry *imethod\_table;};
-    \node[fixed node={\sybwd}{\sybht},below=of a23](a24){char *bootstrap\_methods;};
-    \node[fixed node={\sybwd}{\sybht},below=of a24](a25){ExtraAttributes *extra\_attributes;};
-    \node[fixed node={\sybwd}{\sybht},below=of a25](a26){ConstantPool constant\_pool;};
+    \node[fixed node={\sybwd}{\sybht},below=of a21](a22){MethodBlock **method_table;};
+    \node[fixed node={\sybwd}{\sybht},below=of a22](a23){ITableEntry *imethod_table;};
+    \node[fixed node={\sybwd}{\sybht},below=of a23](a24){char *bootstrap_methods;};
+    \node[fixed node={\sybwd}{\sybht},below=of a24](a25){ExtraAttributes *extra_attributes;};
+    \node[fixed node={\sybwd}{\sybht},below=of a25](a26){ConstantPool constant_pool;};
     
     \node[fixed node={\sybleftwd}{\sybleftht},anchor=north west](a100) at (a26.south west){int dimension;};
-    \node[fixed node={\sybleftwd}{\sybleftht},below=of a100]    (a101){Class *element\_class;};
+    \node[fixed node={\sybleftwd}{\sybleftht},below=of a100]    (a101){Class *element_class;};
     
-    \node[fixed node={\sybrightwd}{\sybrightht},anchor=north west]      (a200) at (a100.north east){u2 *inner\_classes;};
+    \node[fixed node={\sybrightwd}{\sybrightht},anchor=north west]      (a200) at (a100.north east){u2 *inner_classes;};
     \node[fixed node={\sybrightwd}{\sybrightht},below=of a200]          (a201){FieldBlock *fields;};
     \node[fixed node={\sybrightwd}{\sybrightht},below=of a201]          (a202){MethodBlock *methods;};
-    \node[fixed node={\sybrightwd}{\sybrightht},below=of a202]          (a203){int refs\_offsets\_size;};
-    \node[fixed node={\sybrightwd}{\sybrightht},below=of a203]          (a204){RefsOffsetsEntry *refs\_offsets\_table;};
+    \node[fixed node={\sybrightwd}{\sybrightht},below=of a202]          (a203){int refs_offsets_size;};
+    \node[fixed node={\sybrightwd}{\sybrightht},below=of a203]          (a204){RefsOffsetsEntry *refs_offsets_table;};
     
 
     %%% Field
@@ -82,7 +82,7 @@
         ||{char *name;}\\
         ||{char *type;}\\
         ||{char *signature;}\\
-        ||{u2 access\_flags;}\\
+        ||{u2 access_flags;}\\
         ||{u2 constant;}\\
         ||{char data[8]; or offset}\\
     };
@@ -96,24 +96,24 @@
     \node[fixed node={\methodwd}{\methodht},below=of m3](m4){char *signature;};
     \node[fixed node={\methodwd}{\methodht},below=of m4](m5){u1 state;};
     \node[fixed node={\methodwd}{\methodht},below=of m5](m6){u1 flags;};
-    \node[fixed node={\methodwd}{\methodht},below=of m6](m7){u2 access\_flags;};
-    \node[fixed node={\methodwd}{\methodht},below=of m7](m8){u2 max\_stack;};
-    \node[fixed node={\methodwd}{\methodht},below=of m8](m9){u2 max\_locals;};
-    \node[fixed node={\methodwd}{\methodht},below=of m9](m10){u2 args\_count;};
-    \node[fixed node={\methodwd}{\methodht},below=of m10](m11){u2 throw\_table\_size;};
-    \node[fixed node={\methodwd}{\methodht},below=of m11](m12){u2 *throw\_table;};
+    \node[fixed node={\methodwd}{\methodht},below=of m6](m7){u2 access_flags;};
+    \node[fixed node={\methodwd}{\methodht},below=of m7](m8){u2 max_stack;};
+    \node[fixed node={\methodwd}{\methodht},below=of m8](m9){u2 max_locals;};
+    \node[fixed node={\methodwd}{\methodht},below=of m9](m10){u2 args_count;};
+    \node[fixed node={\methodwd}{\methodht},below=of m10](m11){u2 throw_table_size;};
+    \node[fixed node={\methodwd}{\methodht},below=of m11](m12){u2 *throw_table;};
     \node[fixed node={\methodwd}{\methodht},below=of m12](m13){void *code;};
-    \node[fixed node={\methodwd}{\methodht},below=of m13](m14){int code\_size;};
-    \node[fixed node={\methodwd}{\methodht},below=of m14](m99){int method\_table\_index;};
+    \node[fixed node={\methodwd}{\methodht},below=of m13](m14){int code_size;};
+    \node[fixed node={\methodwd}{\methodht},below=of m14](m99){int method_table_index;};
 
-    \node[fixed node={\methodleftwd}{\methodleftht},anchor=north west] (m100) at (m99.south west) {u2 exception\_table\_size;};
-    \node[fixed node={\methodleftwd}{\methodleftht},below=of m100](m101){u2 line\_no\_table\_size;};
-    \node[fixed node={\methodleftwd}{\methodleftht},below=of m101](m102){ExceptionTableEntry *exception\_table;};
-    \node[fixed node={\methodleftwd}{\methodleftht},below=of m102](m103){LineNoTableEntry *line\_no\_table;};
+    \node[fixed node={\methodleftwd}{\methodleftht},anchor=north west] (m100) at (m99.south west) {u2 exception_table_size;};
+    \node[fixed node={\methodleftwd}{\methodleftht},below=of m100](m101){u2 line_no_table_size;};
+    \node[fixed node={\methodleftwd}{\methodleftht},below=of m101](m102){ExceptionTableEntry *exception_table;};
+    \node[fixed node={\methodleftwd}{\methodleftht},below=of m102](m103){LineNoTableEntry *line_no_table;};
 
-    \node[fixed node={\methodrightwd}{\methodrightht},anchor=north west](m200) at (m100.north east) {char *simple\_sig;};
-    \node[fixed node={\methodrightwd}{\methodrightht},below=of m200](m201){int native\_extra\_arg;};
-    \node[fixed node={\methodrightwd}{\methodrightht},below=of m201](m202){NativeMethod native\_invoker;};
+    \node[fixed node={\methodrightwd}{\methodrightht},anchor=north west](m200) at (m100.north east) {char *simple_sig;};
+    \node[fixed node={\methodrightwd}{\methodrightht},below=of m200](m201){int native_extra_arg;};
+    \node[fixed node={\methodrightwd}{\methodrightht},below=of m201](m202){NativeMethod native_invoker;};
 
     %%% lines
     \draw[arrow] (hashtable-1-1.east) to[out=0,in=180] (data01.west);

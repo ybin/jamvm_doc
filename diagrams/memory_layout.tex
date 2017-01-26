@@ -39,15 +39,15 @@
     \draw [left brace] (kernel space.north west) -- node[left note]{1GB} (kernel space.south west);
     \draw [left brace] (kernel space.south west) -- node[left note]{3GB} (user space.south west);
     \draw [right brace] (stack offset.north east) -- node[right note]{Random stack offset} (stack offset.south east);
-    \draw [right brace] (stack offset.south east) -- node[right note]{RLIMIT\_STACK(e.g.8M)} (mmap offset.east);
+    \draw [right brace] (stack offset.south east) -- node[right note]{RLIMIT_STACK(e.g.8M)} (mmap offset.east);
     \draw [right brace] (mmap offset.east) -- node[right note]{Random mmap offset} (mmap offset.south east);
     \draw [right brace] (brk offset.north east) -- node[right note]{Random brk offset} (brk offset.south east);
-    \node[right addr note] at (kernel space.south east) {0xC0000000 == TAST\_SIZE};
+    \node[right addr note] at (kernel space.south east) {0xC0000000 == TAST_SIZE};
     \node[right addr note] at (heap.north east) {program break brk};
     \node[right addr note] at (heap.south east) {start brk};
-    \node[right addr note] at (data.north east) {end\_data};
-    \node[right addr note] at ([yshift=.5em]data.south east) {start\_data};
-    \node[right addr note] at ([yshift=-.5em]text.north east) {end\_text};
+    \node[right addr note] at (data.north east) {end_data};
+    \node[right addr note] at ([yshift=.5em]data.south east) {start_data};
+    \node[right addr note] at ([yshift=-.5em]text.north east) {end_text};
     \node[right addr note] at (text.south east) {0x08048000};
     \node[right addr note] at (user space.south east) {0};
 \end{tikzpicture}

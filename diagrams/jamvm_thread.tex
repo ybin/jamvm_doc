@@ -5,30 +5,30 @@
 \begin{tikzpicture}
 
     %%% content
-    \node (mainThread) [draw] {$main\_thread$};
+    \node (mainThread) [draw] {$main\textunderscore thread$};
     
     \matrix (thread) [table={5cm}{Thread}, right of=mainThread, xshift=5cm] {
         ||{int id;}\\
-        ||{pthread\_t tid;}\\
+        ||{pthread_t tid;}\\
         |(ee)|{ExecEnv *ee;}\\
-        ||{void *stack\_top;}\\
-        ||{void *stack\_end;}\\
-        ||{Monitor *wait\_mon;}\\
-        ||{Monitor *blocked\_mon;}\\
-        ||{Thread *wait\_prev;}\\
-        ||{Thread *wait\_next;}\\
-        ||{pthread\_cond\_t wait\_cv;}\\
-        ||{pthread\_cont\_t park\_cv;}\\
-        ||{pthread\_mutex\_t park\_lock;}\\
-        ||{long long blocked\_count;}\\
-        ||{long long waited\_count;}\\
+        ||{void *stack_top;}\\
+        ||{void *stack_end;}\\
+        ||{Monitor *wait_mon;}\\
+        ||{Monitor *blocked_mon;}\\
+        ||{Thread *wait_prev;}\\
+        ||{Thread *wait_next;}\\
+        ||{pthread_cond_t wait_cv;}\\
+        ||{pthread_cont_t park_cv;}\\
+        ||{pthread_mutex_t park_lock;}\\
+        ||{long long blocked_count;}\\
+        ||{long long waited_count;}\\
         |[fill=gray]|{Thread *prev;}\\
         |[fill=gray]|{Thread *next;}\\
         ||{char suspend;}\\
-        ||{char park\_state;}\\
+        ||{char park_state;}\\
         ||{char interrupted;}\\
         ||{char interrupting;}\\
-        ||{char suspend\_state;}\\
+        ||{char suspend_state;}\\
     };
     
     \matrix (thread2) [table={5cm}{Thread}, below of=thread, yshift=-8cm] {
@@ -47,10 +47,10 @@
     
     \matrix (execEnv) [table={5cm}{ExecEnv}, right of=thread, xshift=6cm] {
         ||{Object *exception;}\\
-        |(stack end)|{char *stack\_end;}\\
+        |(stack end)|{char *stack_end;}\\
         |(stack)|{char *stack;}\\
-        ||{int stack\_size;}\\
-        |(last frame)|{Frame *last\_frame;}\\
+        ||{int stack_size;}\\
+        |(last frame)|{Frame *last_frame;}\\
         ||{Object *thread;}\\
         ||{char overflow;}\\
     };
@@ -60,15 +60,15 @@
         ||{\\[.5em]......\\[.5em]\ }\\
         |[fill=yellow](third frame)|{\\[1em]3rd frame\\[1em]\ }\\
         |[fill=green](second ostack content)|{\\[.8em]operand stack\\ of 2nd frame\\[.8em]\ }\\
-        |[fill=green]|{CodePntr last\_pc;}\\
-        |[fill=green](second ostack)|{uintptr\_t *ostack;}\\
-        |[fill=green](second lvars)|{uintptr\_t *lvars;}\\
+        |[fill=green]|{CodePntr last_pc;}\\
+        |[fill=green](second ostack)|{uintptr_t *ostack;}\\
+        |[fill=green](second lvars)|{uintptr_t *lvars;}\\
         |[fill=green]|{MethodBlock *mb;}\\
         |[fill=green](second prev)|{struct frame *prev;}\\
         |[fill=green](second lvars content)|{\\[.8em]local variables\\ of 2nd frame\\[.8em]\ }\\
-        |[fill=cyan]|{CodePntr last\_pc;}\\
-        |[fill=cyan](first ostack)|{uintptr\_t *ostack;}\\
-        |[fill=cyan](first lvars)|{uintptr\_t *lvars;}\\
+        |[fill=cyan]|{CodePntr last_pc;}\\
+        |[fill=cyan](first ostack)|{uintptr_t *ostack;}\\
+        |[fill=cyan](first lvars)|{uintptr_t *lvars;}\\
         |[fill=cyan](first mb)|{MethodBlock *mb;}\\
         |[fill=cyan](first prev)|{struct frame *prev;\\(NULL)}\\
         ||{\\[.5em]MethodBlock(dummy)\\[.5em]\ }\\
