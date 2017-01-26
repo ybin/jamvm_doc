@@ -1,7 +1,6 @@
 \documentclass[border=10pt]{standalone}
-\usepackage{tikz}
-\usetikzlibrary{shapes,arrows,positioning,calc,backgrounds,matrix,fit,decorations.pathreplacing, fit}
-\begin{document}
+\input{config}
+
 \newcommand{\sybwd}{32em}
 \newcommand{\sybht}{2em}
 \newcommand{\sybleftwd}{12em}
@@ -15,57 +14,9 @@
 \newcommand{\methodleftht}{3em}
 \newcommand{\methodrightwd}{16em}
 \newcommand{\methodrightht}{4em}
-\begin{tikzpicture}[
-    table/.style 2 args={
-        draw,
-        rectangle,
-        inner sep=0pt,
-        matrix of nodes,
-        nodes in empty cells,
-        nodes={
-            draw,
-            font=\ttfamily,
-            align=center,
-            text width=#1,
-            outer sep=0pt,
-            inner sep=0.3em,
-            minimum height=1.6em
-        },
-        label={[align=center]90:\bf{#2}}
-    },
-    table/.default={10cm}{},
-    right brace/.style 2 args={
-        decorate,
-        decoration={brace,amplitude=#1,raise=#2}
-    },
-    right brace/.default={8pt}{2pt},
-    right note/.style={right=#1},
-    right note/.default={0.3cm},
-    left note/.style={left=#1},
-    left note/.default={0.3cm},
-    left brace/.style 2 args={
-        decorate,
-        decoration={brace,amplitude=#1,raise=#2,mirror}
-    },
-    left brace/.default={8pt}{2pt},
-    right addr note/.style={right=#1},
-    right addr note/.default={0.5cm},
-    left addr note/.style={left=#1},
-    left addr note/.default={0.5cm},
-    arrow/.style={>=stealth',->},
-    fixed node/.style 2 args={
-        node distance=0,
-        outer sep=0,
-        inner sep=0,
-        draw,
-        font=\ttfamily,
-        rectangle,
-        minimum width=#1,
-        minimum height=#2
-    },
-    blank cell/.style={fill=white,minimum height=1cm},
-    non blank cell/.style={fill=cyan!30,minimum height=#1}]
 
+\begin{document}
+\begin{tikzpicture}
 
     %%% hashtable
     \matrix (hashtable) [table={4cm}{Boot Class Hash Table}] {
