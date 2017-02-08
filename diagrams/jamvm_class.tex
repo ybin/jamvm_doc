@@ -19,65 +19,73 @@
 \begin{tikzpicture}
 
     %%% hashtable
-    \matrix (hashtable) [table={4cm}{Boot Class Hash Table}] {
-      ||{HashEntry *hash_table;}\\
-      ||{int hash_size;}\\
-      ||{int hash_count;}\\
-      ||{VMLock lock;}\\
-    };
-    
-    
+    \begin{struct}{hashtable}{4.5cm}{2em}
+        \node[fixed node={\diaWidth}{\diaHeight},label={Boot Class Hash Table}]
+            (\id){HashEntry *hash_table;};\updateIndex
+        \record{}{int hash_size;}
+        \record{}{int hash_count;}
+        \record{}{VMLock lock;}
+    \end{struct}
+
+
     %%% hash data
-    \node[fixed node={4cm}{2em}, right=of hashtable-1-1, xshift=1.5cm](data){...};
-    \node[fixed node={4cm}{2em}, below=of data](data01){hash(classname)};
-    \node[fixed node={4cm}{2em}, below=of data01](data02){...};
-    \node[fixed node={4cm}{2em}, anchor=north west,](data1) at(data.north east){...};
-    \node[fixed node={4cm}{2em}, below=of data1](data11){void *data;};
-    \node[fixed node={4cm}{2em}, below=of data11](data12){...};
+    \begin{struct}{hashdata1}{4cm}{2em}
+        \node[fixed node={\diaWidth}{\diaHeight},right=3cm of hashtable-0](\id){...};\updateIndex
+        \record{}{hash(classname)}
+        \record{}{...}
+    \end{struct}
+    \begin{struct}{hashdata2}{4cm}{2em}
+        \node[fixed node={\diaWidth}{\diaHeight},right=0cm of hashdata1-0](\id){...};\updateIndex
+        \record{}{void *data;}
+        \record{}{...}
+    \end{struct}
 
 
     %%% Class
-    \node[rectangle,inner sep=1em,right=5cm of data1, xshift=2cm, yshift=2cm](title){Class};
-    \node[fixed node={\sybwd}{\sybht},fill=cyan,below=of title](a0){uintptr_t lock;};
-    \node[fixed node={\sybwd}{\sybht},fill=cyan,below=of a0](a1){Class *class;};
-    \node[fixed node={\sybwd}{\sybht},below=of a1](a2){u1 state;};
-    \node[fixed node={\sybwd}{\sybht},below=of a2](a3){u2 access_flags;};
-    \node[fixed node={\sybwd}{\sybht},below=of a3](a4){u2 declaring_class;};
-    \node[fixed node={\sybwd}{\sybht},below=of a4](a5){u2 enclosing_class;};
-    \node[fixed node={\sybwd}{\sybht},below=of a5](a6){u2 enclosing_method;};
-    \node[fixed node={\sybwd}{\sybht},below=of a6](a7){u2 inner_access_flags;};
-    \node[fixed node={\sybwd}{\sybht},below=of a7](a8){u2 fields_count;};
-    \node[fixed node={\sybwd}{\sybht},below=of a8](a9){u2 methods_count;};
-    \node[fixed node={\sybwd}{\sybht},below=of a9](a10){u2 interfaces_count;};
-    \node[fixed node={\sybwd}{\sybht},below=of a10](a11){u2 inner_class_count;};
-    \node[fixed node={\sybwd}{\sybht},below=of a11](a12){u2 constant_pool_count;};
-    \node[fixed node={\sybwd}{\sybht},below=of a12](a13){int object_size;};
-    \node[fixed node={\sybwd}{\sybht},below=of a13](a14){int method_table_size;};
-    \node[fixed node={\sybwd}{\sybht},below=of a14](a15){int imethod_table_size;};
-    \node[fixed node={\sybwd}{\sybht},below=of a15](a16){int initing_tid;};
-    \node[fixed node={\sybwd}{\sybht},below=of a16](a17){char *name;};
-    \node[fixed node={\sybwd}{\sybht},below=of a17](a18){char *signature;};
-    \node[fixed node={\sybwd}{\sybht},below=of a18](a19){char *source_file_name;};
-    \node[fixed node={\sybwd}{\sybht},below=of a19](a20){Class *super;};
-    \node[fixed node={\sybwd}{\sybht},below=of a20](a21){Class **interfaces;};
-    \node[fixed node={\sybwd}{\sybht},below=of a21](a22){MethodBlock **method_table;};
-    \node[fixed node={\sybwd}{\sybht},below=of a22](a23){ITableEntry *imethod_table;};
-    \node[fixed node={\sybwd}{\sybht},below=of a23](a24){char *bootstrap_methods;};
-    \node[fixed node={\sybwd}{\sybht},below=of a24](a25){ExtraAttributes *extra_attributes;};
-    \node[fixed node={\sybwd}{\sybht},below=of a25](a26){ConstantPool constant_pool;};
-    
-    \node[fixed node={\sybleftwd}{\sybleftht},anchor=north west](a100) at (a26.south west){int dimension;};
-    \node[fixed node={\sybleftwd}{\sybleftht},below=of a100]    (a101){Class *element_class;};
-    
-    \node[fixed node={\sybrightwd}{\sybrightht},anchor=north west]      (a200) at (a100.north east){u2 *inner_classes;};
-    \node[fixed node={\sybrightwd}{\sybrightht},below=of a200]          (a201){FieldBlock *fields;};
-    \node[fixed node={\sybrightwd}{\sybrightht},below=of a201]          (a202){MethodBlock *methods;};
-    \node[fixed node={\sybrightwd}{\sybrightht},below=of a202]          (a203){int refs_offsets_size;};
-    \node[fixed node={\sybrightwd}{\sybrightht},below=of a203]          (a204){RefsOffsetsEntry *refs_offsets_table;};
-    
+    \begin{struct}{class}{12cm}{2em}   
+        \node[fixed node={\diaWidth}{\diaHeight},label={Class},right=3cm of hashdata2-0,fill=cyan!30](\id){uintptr_t lock;};\updateIndex
+        \record{fill=cyan!30}{Class *class;};
+        \record{}{u1 state;};
+        \record{}{u2 access_flags;};
+        \record{}{u2 declaring_class;};
+        \record{}{u2 enclosing_class;};
+        \record{}{u2 enclosing_method;};
+        \record{}{u2 inner_access_flags;};
+        \record{}{u2 fields_count;};
+        \record{}{u2 methods_count;};
+        \record{}{u2 interfaces_count;};
+        \record{}{u2 inner_class_count;};
+        \record{}{u2 constant_pool_count;};
+        \record{}{int object_size;};
+        \record{}{int method_table_size;};
+        \record{}{int imethod_table_size;};
+        \record{}{int initing_tid;};
+        \record{}{char *name;};
+        \record{}{char *signature;};
+        \record{}{char *source_file_name;};
+        \record{}{Class *super;};
+        \record{}{Class **interfaces;};
+        \record{}{MethodBlock **method_table;};
+        \record{}{ITableEntry *imethod_table;};
+        \record{}{char *bootstrap_methods;};
+        \record{}{ExtraAttributes *extra_attributes;};
+        \record{}{ConstantPool constant_pool;};
+    \end{struct}
+    \begin{struct}{class-union-left}{4.5cm}{5em}
+        \node[fixed node={\diaWidth}{\diaHeight},anchor=north west](\id)at(class.south west){int dimension;};\updateIndex
+        \record{}{Class *element_class;};
+    \end{struct}
+    \begin{struct}{class-union-left}{7.5cm}{2em}
+        \node[fixed node={\diaWidth}{\diaHeight},anchor=north west](\id)at(class-union-left.north east){u2 *inner_classes;};\updateIndex
+        \record{}{FieldBlock *fields;};
+        \record{}{MethodBlock *methods;};
+        \record{}{int refs_offsets_size;};
+        \record{}{RefsOffsetsEntry *refs_offsets_table;};
+    \end{struct}
+
 
     %%% Field
-    \matrix (fieldblock) [table={4cm}{FieldBlock},below=3cm of data,xshift=4cm] {
+    \matrix (fieldblock) [table={4cm}{FieldBlock},below=3cm of hashdata1,xshift=4cm] {
         ||{Class *class;}\\
         ||{char *name;}\\
         ||{char *type;}\\
@@ -116,9 +124,9 @@
     \node[fixed node={\methodrightwd}{\methodrightht},below=of m201](m202){NativeMethod native_invoker;};
 
     %%% lines
-    \draw[arrow] (hashtable-1-1.east) to[out=0,in=180] (data01.west);
-    \draw[arrow] (data11.east) to[out=0,in=180] (a0.west);
-    \draw[right brace] (a0.north east) -- node[right note]{class header} (a1.south east);
+    \draw[arrow] (hashtable-0.east) to[out=0,in=180] (hashdata1-1.west);
+    \draw[arrow] (hashdata2-1.east) to[out=0,in=180] (class-0.west);
+    \draw[right brace] (class-0.north east) -- node[right note]{class header} (class-1.south east);
 \end{tikzpicture}
 \end{document}
 
