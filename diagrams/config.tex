@@ -1,6 +1,33 @@
 \usepackage{underscore}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,positioning,calc,backgrounds,matrix,fit,decorations.pathreplacing}
+
+\newcount\index
+\newcommand{\diaName}{default name}
+\newcommand{\diaWidth}{10em}
+\newcommand{\diaHeight}{2em}
+\newcommand{\updateIndex}{\advance\index by 1\relax}
+\newcommand{\lastId}{\diaName-\the\numexpr\index-1\relax}
+\newcommand{\id}{\diaName-\the\index}
+
+\newcommand{\record}[2]{
+    \node[fixed node={\diaWidth}{\diaHeight},below=of \lastId,#1](\id){#2};
+    \updateIndex
+}
+%%% environment struct
+\newenvironment{struct}[3]
+{
+    \index=0
+    \renewcommand{\diaName}{#1}
+    \renewcommand{\diaWidth}{#2}
+    \renewcommand{\diaHeight}{#3}
+}
+{
+    \node[fit=(\diaName-0)(\lastId),inner sep=0pt](\diaName){};
+}
+%%% environment struct end
+
+
 \tikzset{
     table/.style 2 args={
         draw,

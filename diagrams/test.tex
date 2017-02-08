@@ -1,28 +1,20 @@
 \documentclass[border=10pt]{standalone}
 \input{config}
 
-\newcounter{index}
-\newcommand{\diaName}{default name}
-\newcommand{\diaWidth}{10em}
-\newcommand{\diaHeight}{2em}
-\newcounter{lastIndex}
-\newcommand{\updateIndex}{\setcounter{lastIndex}{\value{index}} \stepcounter{index}}
-\newcommand{\lastId}{\diaName-\arabic{lastIndex}}
-\newcommand{\id}{\diaName-\arabic{index}}
-
 \begin{document}
 
 \begin{tikzpicture}
-
-    %%% new block
-    %%% name: test
-    \renewcommand{\diaName}{test}
-    \renewcommand{\diaWidth}{20em-10em}
-    \renewcommand{\diaHeight}{2em}
     
-    \node[title node](\id){MethodBlock}; \updateIndex
-    \node[fixed node={\diaWidth}{\diaHeight},below=of \lastId](\id){Class *clas;}; \updateIndex
-    \node[fit=(\diaName-0)(\lastId),draw=red](\diaName){};
+    \begin{struct}{test}{10em}{2em}
+        \node[fixed node={\diaWidth}{\diaHeight},label={title}](\id){content};\updateIndex
+        \record{}{bbb}
+        \record{}{}
+        \record{}{}
+        \record{}{}
+        \record{}{}
+        \record{fill=red}{aaa}
+    \end{struct}
+    
 
 \end{tikzpicture}
 \end{document}
