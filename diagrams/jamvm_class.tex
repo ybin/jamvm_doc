@@ -27,9 +27,9 @@
 
 
     %%% Class
-    \begin{struct}[Class][right=3cm of hashdata2-0]{class}{12cm}{2em}
-        \record[fill=cyan!30]{uintptr_t lock;}
-        \record[fill=cyan!30]{Class *class;}
+    \begin{struct}[Class][right=3cm of hashdata2-0]{class}{9cm}{2em}
+        \record[fill=blue!30]{uintptr_t lock;}
+        \record[fill=blue!30]{Class *class;}
         \record{u1 state;}
         \record{u2 access_flags;}
         \record{u2 declaring_class;}
@@ -56,16 +56,16 @@
         \record{ExtraAttributes *extra_attributes;}
         \record{ConstantPool constant_pool;}
     \end{struct}
-    \begin{struct}[][below=of class.south west,anchor=north west]{class-union-left}{4.5cm}{5em}
+    \begin{struct}[][below=of class.south west,anchor=north west]{class-union-left}{4.5cm}{7.5em}
         \record{int dimension;}
         \record{Class *element_class;}
     \end{struct}
-    \begin{struct}[][below=of class,right=of class-union-left-0]{class-union-left}{7.5cm}{2em}
+    \begin{struct}[][below=of class,right=of class-union-left-0]{class-union-left}{4.5cm}{3em}
         \record{u2 *inner_classes;}
         \record{FieldBlock *fields;}
         \record{MethodBlock *methods;}
         \record{int refs_offsets_size;}
-        \record{RefsOffsetsEntry *refs_offsets_table;}
+        \record{RefsOffsetsEntry *\\refs_offsets_table;}
     \end{struct}
 
 
@@ -82,7 +82,7 @@
 
 
     %%% MethodBlock
-    \begin{struct}[MethodBlock][below=3cm of field]{method}{13cm}{2em}
+    \begin{struct}[MethodBlock][below=3cm of field]{method}{10.5cm}{2em}
         \record{Class *clas;}
         \record{char *name;}
         \record{char *type;}
@@ -99,13 +99,13 @@
         \record{int code_size;}
         \record{int method_table_index;}
     \end{struct}
-    \begin{struct}[][below=of method.south west,anchor=north west]{method-union-left}{7.5cm}{2em}
+    \begin{struct}[][below=of method.south west,anchor=north west]{method-union-left}{5cm}{3em}
         \record{u2 exception_table_size;}
         \record{u2 line_no_table_size;}
-        \record{ExceptionTableEntry *exception_table;}
-        \record{LineNoTableEntry *line_no_table;}
+        \record{ExceptionTableEntry *\\exception_table;}
+        \record{LineNoTableEntry *\\line_no_table;}
     \end{struct}
-    \begin{struct}[][right=of method-union-left.north east,anchor=north west]{method-union-right}{5.5cm}{\dimexpr 8em/3\relax}
+    \begin{struct}[][right=of method-union-left.north east,anchor=north west]{method-union-right}{5.5cm}{4em}
         \record{char *simple_sig;}
         \record{int native_extra_arg;}
         \record{NativeMethod native_invoker;}

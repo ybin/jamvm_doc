@@ -18,12 +18,42 @@
         \node[fixed node={\diaWidth}{\diaHeight},below=of \lastId, ##1](\id){##2};
         \updateIndex
     }
+    %% \element[style for node]{node content}
+    \newcommand{\element}[2][]{
+        \node[fixed node={\diaWidth}{\diaHeight},right=of \lastId, ##1](\id){##2};
+        \updateIndex
+    }
     %% dummy node for label(title)
     \node[draw,fixed node={\diaWidth}{0em},label={[name=\diaName-label,yshift=0.8em]\textbf{#1}},#2](\id){};\updateIndex
 }
 {
     %% dummy node for wrapping all nodes in this environment
-    \node[fit=(\diaName-0)(\lastId),inner sep=0pt](\diaName){};
+    \node[fit=(\diaName-0)(\lastId),inner sep=0pt,draw=blue](\diaName){};
+}
+%%% environment struct end
+
+
+%%% environment arr: [label][style for dummy node]{name}{width}{height}
+\DeclareDocumentEnvironment{arr}{ O{} O{} m m m }
+{
+    \newcount\index
+    \newcommand{\diaName}{#3}
+    \newcommand{\diaWidth}{#4}
+    \newcommand{\diaHeight}{#5}
+    \newcommand{\updateIndex}{\advance\index by 1\relax}
+    \newcommand{\lastId}{\diaName-\the\numexpr\index-1\relax}
+    \newcommand{\id}{\diaName-\the\index}
+    %% \element[style for node]{node content}
+    \newcommand{\element}[2][]{
+        \node[label=below:\tiny{\the\numexpr\index-1\relax},fixed node={\diaWidth}{\diaHeight},right=of \lastId, ##1](\id){##2};
+        \updateIndex
+    }
+    %% dummy node for label(title)
+    \node[draw,fixed node={0em}{\diaHeight},label={[name=\diaName-label]180:{\bf #1}},#2](\id){};\updateIndex
+}
+{
+    %% dummy node for wrapping all nodes in this environment
+    \node[fit=(\diaName-0)(\lastId),inner sep=0pt,draw=blue](\diaName){};
 }
 %%% environment struct end
 
@@ -70,9 +100,11 @@
         node distance=0,
         outer sep=0,
         inner sep=0,
-        draw,
+        draw=white,
+        fill=green!50,
         font=\ttfamily,
         rectangle,
+        align=center,
         minimum width=#1,
         minimum height=#2
     },
