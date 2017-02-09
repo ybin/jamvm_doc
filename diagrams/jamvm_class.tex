@@ -1,132 +1,121 @@
 \documentclass[border=10pt]{standalone}
 \input{config}
 
-\newcommand{\sybwd}{32em}
-\newcommand{\sybht}{2em}
-\newcommand{\sybleftwd}{12em}
-\newcommand{\sybleftht}{5em}
-\newcommand{\sybrightwd}{20em}
-\newcommand{\sybrightht}{2em}
-
-\newcommand{\methodwd}{36em}
-\newcommand{\methodht}{2em}
-\newcommand{\methodleftwd}{20em}
-\newcommand{\methodleftht}{3em}
-\newcommand{\methodrightwd}{16em}
-\newcommand{\methodrightht}{4em}
-
 \begin{document}
 \begin{tikzpicture}
 
     %%% hashtable
-    \begin{struct}{hashtable}{4.5cm}{2em}
-        \node[fixed node={\diaWidth}{\diaHeight},label={Boot Class Hash Table}]
-            (\id){HashEntry *hash_table;};\updateIndex
-        \record{}{int hash_size;}
-        \record{}{int hash_count;}
-        \record{}{VMLock lock;}
+    \begin{struct}[Boot Class Hash Table]{hashtable}{4.5cm}{2em}
+        \record{HashEntry *hash_table;}
+        \record{int hash_size;}
+        \record{int hash_count;}
+        \record{VMLock lock;}
     \end{struct}
 
 
     %%% hash data
-    \begin{struct}{hashdata1}{4cm}{2em}
-        \node[fixed node={\diaWidth}{\diaHeight},right=3cm of hashtable-0](\id){...};\updateIndex
-        \record{}{hash(classname)}
-        \record{}{...}
+    \begin{struct}[][right=3cm of hashtable-0]{hashdata1}{4cm}{2em}
+        \record{...}
+        \record{hash(classname)}
+        \record{...}
     \end{struct}
-    \begin{struct}{hashdata2}{4cm}{2em}
-        \node[fixed node={\diaWidth}{\diaHeight},right=0cm of hashdata1-0](\id){...};\updateIndex
-        \record{}{void *data;}
-        \record{}{...}
+    \begin{struct}[][right=0cm of hashdata1-0]{hashdata2}{4cm}{2em}
+        \record{...}
+        \record{void *data;}
+        \record{...}
     \end{struct}
 
 
     %%% Class
-    \begin{struct}{class}{12cm}{2em}   
-        \node[fixed node={\diaWidth}{\diaHeight},label={Class},right=3cm of hashdata2-0,fill=cyan!30](\id){uintptr_t lock;};\updateIndex
-        \record{fill=cyan!30}{Class *class;};
-        \record{}{u1 state;};
-        \record{}{u2 access_flags;};
-        \record{}{u2 declaring_class;};
-        \record{}{u2 enclosing_class;};
-        \record{}{u2 enclosing_method;};
-        \record{}{u2 inner_access_flags;};
-        \record{}{u2 fields_count;};
-        \record{}{u2 methods_count;};
-        \record{}{u2 interfaces_count;};
-        \record{}{u2 inner_class_count;};
-        \record{}{u2 constant_pool_count;};
-        \record{}{int object_size;};
-        \record{}{int method_table_size;};
-        \record{}{int imethod_table_size;};
-        \record{}{int initing_tid;};
-        \record{}{char *name;};
-        \record{}{char *signature;};
-        \record{}{char *source_file_name;};
-        \record{}{Class *super;};
-        \record{}{Class **interfaces;};
-        \record{}{MethodBlock **method_table;};
-        \record{}{ITableEntry *imethod_table;};
-        \record{}{char *bootstrap_methods;};
-        \record{}{ExtraAttributes *extra_attributes;};
-        \record{}{ConstantPool constant_pool;};
+    \begin{struct}[Class][right=3cm of hashdata2-0]{class}{12cm}{2em}
+        \record[fill=cyan!30]{uintptr_t lock;}
+        \record[fill=cyan!30]{Class *class;}
+        \record{u1 state;}
+        \record{u2 access_flags;}
+        \record{u2 declaring_class;}
+        \record{u2 enclosing_class;}
+        \record{u2 enclosing_method;}
+        \record{u2 inner_access_flags;}
+        \record{u2 fields_count;}
+        \record{u2 methods_count;}
+        \record{u2 interfaces_count;}
+        \record{u2 inner_class_count;}
+        \record{u2 constant_pool_count;}
+        \record{int object_size;}
+        \record{int method_table_size;}
+        \record{int imethod_table_size;}
+        \record{int initing_tid;}
+        \record{char *name;}
+        \record{char *signature;}
+        \record{char *source_file_name;}
+        \record{Class *super;}
+        \record{Class **interfaces;}
+        \record{MethodBlock **method_table;}
+        \record{ITableEntry *imethod_table;}
+        \record{char *bootstrap_methods;}
+        \record{ExtraAttributes *extra_attributes;}
+        \record{ConstantPool constant_pool;}
     \end{struct}
-    \begin{struct}{class-union-left}{4.5cm}{5em}
-        \node[fixed node={\diaWidth}{\diaHeight},anchor=north west](\id)at(class.south west){int dimension;};\updateIndex
-        \record{}{Class *element_class;};
+    \begin{struct}[][below=of class.south west,anchor=north west]{class-union-left}{4.5cm}{5em}
+        \record{int dimension;}
+        \record{Class *element_class;}
     \end{struct}
-    \begin{struct}{class-union-left}{7.5cm}{2em}
-        \node[fixed node={\diaWidth}{\diaHeight},anchor=north west](\id)at(class-union-left.north east){u2 *inner_classes;};\updateIndex
-        \record{}{FieldBlock *fields;};
-        \record{}{MethodBlock *methods;};
-        \record{}{int refs_offsets_size;};
-        \record{}{RefsOffsetsEntry *refs_offsets_table;};
+    \begin{struct}[][below=of class,right=of class-union-left-0]{class-union-left}{7.5cm}{2em}
+        \record{u2 *inner_classes;}
+        \record{FieldBlock *fields;}
+        \record{MethodBlock *methods;}
+        \record{int refs_offsets_size;}
+        \record{RefsOffsetsEntry *refs_offsets_table;}
     \end{struct}
 
 
-    %%% Field
-    \matrix (fieldblock) [table={4cm}{FieldBlock},below=3cm of hashdata1,xshift=4cm] {
-        ||{Class *class;}\\
-        ||{char *name;}\\
-        ||{char *type;}\\
-        ||{char *signature;}\\
-        ||{u2 access_flags;}\\
-        ||{u2 constant;}\\
-        ||{char data[8]; or offset}\\
-    };
+    %%% FieldBlock
+    \begin{struct}[FieldBlock][below=3cm of hashtable]{field}{5cm}{2em}
+        \record{Class *class;}
+        \record{char *name;}
+        \record{char *type;}
+        \record{char *signature;}
+        \record{u2 access_flags;}
+        \record{u2 constant;}
+        \record{char data[8]; or offset}
+    \end{struct}
 
 
     %%% MethodBlock
-    \node[rectangle,inner sep=1em,below=1cm of hashtable](method title){MethodBlock};
-    \node[fixed node={\methodwd}{\methodht},below=of method title](m1){Class *clas;};
-    \node[fixed node={\methodwd}{\methodht},below=of m1](m2){char *name;};
-    \node[fixed node={\methodwd}{\methodht},below=of m2](m3){char *type;};
-    \node[fixed node={\methodwd}{\methodht},below=of m3](m4){char *signature;};
-    \node[fixed node={\methodwd}{\methodht},below=of m4](m5){u1 state;};
-    \node[fixed node={\methodwd}{\methodht},below=of m5](m6){u1 flags;};
-    \node[fixed node={\methodwd}{\methodht},below=of m6](m7){u2 access_flags;};
-    \node[fixed node={\methodwd}{\methodht},below=of m7](m8){u2 max_stack;};
-    \node[fixed node={\methodwd}{\methodht},below=of m8](m9){u2 max_locals;};
-    \node[fixed node={\methodwd}{\methodht},below=of m9](m10){u2 args_count;};
-    \node[fixed node={\methodwd}{\methodht},below=of m10](m11){u2 throw_table_size;};
-    \node[fixed node={\methodwd}{\methodht},below=of m11](m12){u2 *throw_table;};
-    \node[fixed node={\methodwd}{\methodht},below=of m12](m13){void *code;};
-    \node[fixed node={\methodwd}{\methodht},below=of m13](m14){int code_size;};
-    \node[fixed node={\methodwd}{\methodht},below=of m14](m99){int method_table_index;};
+    \begin{struct}[MethodBlock][below=3cm of field]{method}{13cm}{2em}
+        \record{Class *clas;}
+        \record{char *name;}
+        \record{char *type;}
+        \record{char *signature;}
+        \record{u1 state;}
+        \record{u1 flags;}
+        \record{u2 access_flags;}
+        \record{u2 max_stack;}
+        \record{u2 max_locals;}
+        \record{u2 args_count;}
+        \record{u2 throw_table_size;}
+        \record{u2 *throw_table;}
+        \record{void *code;}
+        \record{int code_size;}
+        \record{int method_table_index;}
+    \end{struct}
+    \begin{struct}[][below=of method.south west,anchor=north west]{method-union-left}{7.5cm}{2em}
+        \record{u2 exception_table_size;}
+        \record{u2 line_no_table_size;}
+        \record{ExceptionTableEntry *exception_table;}
+        \record{LineNoTableEntry *line_no_table;}
+    \end{struct}
+    \begin{struct}[][right=of method-union-left.north east,anchor=north west]{method-union-right}{5.5cm}{\dimexpr 8em/3\relax}
+        \record{char *simple_sig;}
+        \record{int native_extra_arg;}
+        \record{NativeMethod native_invoker;}
+    \end{struct}
 
-    \node[fixed node={\methodleftwd}{\methodleftht},anchor=north west] (m100) at (m99.south west) {u2 exception_table_size;};
-    \node[fixed node={\methodleftwd}{\methodleftht},below=of m100](m101){u2 line_no_table_size;};
-    \node[fixed node={\methodleftwd}{\methodleftht},below=of m101](m102){ExceptionTableEntry *exception_table;};
-    \node[fixed node={\methodleftwd}{\methodleftht},below=of m102](m103){LineNoTableEntry *line_no_table;};
-
-    \node[fixed node={\methodrightwd}{\methodrightht},anchor=north west](m200) at (m100.north east) {char *simple_sig;};
-    \node[fixed node={\methodrightwd}{\methodrightht},below=of m200](m201){int native_extra_arg;};
-    \node[fixed node={\methodrightwd}{\methodrightht},below=of m201](m202){NativeMethod native_invoker;};
 
     %%% lines
-    \draw[arrow] (hashtable-0.east) to[out=0,in=180] (hashdata1-1.west);
-    \draw[arrow] (hashdata2-1.east) to[out=0,in=180] (class-0.west);
-    \draw[right brace] (class-0.north east) -- node[right note]{class header} (class-1.south east);
+    \draw[arrow] (hashtable-1.east) to[out=0,in=180] (hashdata1-2.west);
+    \draw[arrow] (hashdata2-2.east) to[out=0,in=180] (class-1.west);
+    \draw[right brace] (class-1.north east) -- node[right note]{class header} (class-2.south east);
 \end{tikzpicture}
 \end{document}
 

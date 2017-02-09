@@ -4,17 +4,16 @@
 \begin{document}
 
 \begin{tikzpicture}
-    
-    \begin{struct}{test}{10em}{2em}
-        \node[fixed node={\diaWidth}{\diaHeight},label={title}](\id){content};\updateIndex
-        \record{}{bbb}
-        \record{}{}
-        \record{}{}
-        \record{}{}
-        \record{}{}
-        \record{fill=red}{aaa}
+
+    \begin{struct}[title][]{test}{10em}{2em}
+        \record{bbb}
+        \record{}
+        \record{}
+        \record{}
+        \record{}
+        \record[fill=red,draw=blue]{aaa}
     \end{struct}
-    
+
 
 \end{tikzpicture}
 \end{document}
