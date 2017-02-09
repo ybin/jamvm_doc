@@ -1,3 +1,4 @@
+
 \usepackage{xparse}
 \usepackage{underscore}
 \usepackage{tikz}
@@ -24,17 +25,17 @@
         \updateIndex
     }
     %% dummy node for label(title)
-    \node[draw,fixed node={\diaWidth}{0em},label={[name=\diaName-label,yshift=0.8em]\textbf{#1}},#2](\id){};\updateIndex
+    \node[draw,fixed node={\diaWidth}{0em},label={[name=\diaName-label,yshift=0.5em]\textbf{#1}},#2](\id){};\updateIndex
 }
 {
     %% dummy node for wrapping all nodes in this environment
-    \node[fit=(\diaName-0)(\lastId),inner sep=0pt,draw=blue](\diaName){};
+    \node[fit=(\diaName-0)(\lastId),inner sep=0pt](\diaName){};
 }
 %%% environment struct end
 
 
 %%% environment arr: [label][style for dummy node]{name}{width}{height}
-\DeclareDocumentEnvironment{arr}{ O{} O{} m m m }
+\DeclareDocumentEnvironment{arr}{ O{} O{} m O{3em} O{1em} }
 {
     \newcount\index
     \newcommand{\diaName}{#3}
@@ -53,7 +54,7 @@
 }
 {
     %% dummy node for wrapping all nodes in this environment
-    \node[fit=(\diaName-0)(\lastId),inner sep=0pt,draw=blue](\diaName){};
+    \node[fit=(\diaName-0)(\lastId),inner sep=0pt](\diaName){};
 }
 %%% environment struct end
 

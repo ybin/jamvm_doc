@@ -26,8 +26,8 @@
     \end{struct}
 
 
-    %%% Class
-    \begin{struct}[Class][right=3cm of hashdata2-0]{class}{9cm}{2em}
+    %%% Class object: cc.ybin.Demo
+    \begin{struct}[class object~(cc.ybin.Demo)][right=3cm of hashdata2-0]{demo}{9cm}{2em}
         \record[fill=blue!30]{uintptr_t lock;}
         \record[fill=blue!30]{Class *class;}
         \record{u1 state;}
@@ -50,23 +50,116 @@
         \record{char *source_file_name;}
         \record{Class *super;}
         \record{Class **interfaces;}
-        \record{MethodBlock **method_table;}
         \record{ITableEntry *imethod_table;}
+        \record{MethodBlock **method_table;}
         \record{char *bootstrap_methods;}
         \record{ExtraAttributes *extra_attributes;}
         \record{ConstantPool constant_pool;}
     \end{struct}
-    \begin{struct}[][below=of class.south west,anchor=north west]{class-union-left}{4.5cm}{7.5em}
+    \begin{struct}[][below=of demo.south west,anchor=north west]{demo-union-left}{4.5cm}{7.5em}
         \record{int dimension;}
         \record{Class *element_class;}
     \end{struct}
-    \begin{struct}[][below=of class,right=of class-union-left-0]{class-union-left}{4.5cm}{3em}
+    \begin{struct}[][below=of demo,right=of demo-union-left-0]{demo-union-right}{4.5cm}{3em}
         \record{u2 *inner_classes;}
-        \record{FieldBlock *fields;}
         \record{MethodBlock *methods;}
+        \record{FieldBlock *fields;}
         \record{int refs_offsets_size;}
         \record{RefsOffsetsEntry *\\refs_offsets_table;}
     \end{struct}
+
+
+    %%% Class object: java.lang.Class
+    \begin{struct}[class object~(java.lang.Class)][right=3cm of demo-0]{class}{5cm}{2em}
+        \record[fill=blue!30]{uintptr_t lock;}
+        \record[fill=blue!30]{Class *class;~(NULL)}
+        \record{......}
+    \end{struct}
+
+
+    %%% Class object: java.lang.Object
+    \begin{struct}[class object~(java.lang.Object)][below=3cm of class]{object}{5cm}{2em}
+        \record[fill=blue!30]{uintptr_t lock;}
+        \record[fill=blue!30]{Class *class;}
+        \record{......}
+    \end{struct}
+
+
+    %%% Class object: cc.ybin.IDemo
+    \begin{struct}[class object~(cc.ybin.IDemo)][below=3cm of object]{idemo}{5cm}{2em}
+        \record[fill=blue!30]{uintptr_t lock;}
+        \record[fill=blue!30]{Class *class;}
+        \record{......}
+    \end{struct}
+
+
+    %%% interfaces
+    \begin{arr}[][right=3cm of demo-22]{interface-array}
+        \element{}
+        \element{}
+        \element{}
+        \element{...}
+    \end{arr}
+
+
+    %%% interface table
+    \begin{arr}[][right=3cm of demo-23]{interface-table}
+        \element{}
+        \element{}
+        \element{}
+        \element{...}
+    \end{arr}
+
+
+    %%% method table
+    \begin{arr}[][right=3cm of demo-24]{method-table}
+        \element[fill=cyan!30]{}
+        \element[fill=cyan!30]{}
+        \element[fill=cyan!30]{}
+        \element{}
+        \element{...}
+    \end{arr}
+
+
+    %%% constant pool
+    \begin{struct}[ConstantPool][right=7cm of demo-26]{constant-pool}{5cm}{2em}
+        \record{volatile u1 *type;}
+        \record{ConstantPoolEntry *info;}
+    \end{struct}
+
+    %%% constant pool type
+    \begin{arr}[][right=3cm of constant-pool-1]{constant-pool-type}
+        \element{}
+        \element{}
+        \element{}
+        \element{...}
+    \end{arr}
+
+    %%% constant pool info
+    \begin{arr}[][right=3cm of constant-pool-2]{constant-pool-info}
+        \element{}
+        \element{}
+        \element{}
+        \element{...}
+    \end{arr}
+
+
+    %%% methods
+    \begin{arr}[][right=3cm of demo-union-right-2]{method-array}[8em][2em]
+        \element{MethodBlock}
+        \element{MethodBlock}
+        \element{...}
+    \end{arr}
+
+
+    %%% fields
+    \begin{arr}[][right=3cm of demo-union-right-3]{field-array}[8em][2em]
+        \element[fill=cyan!30]{FieldBlock}
+        \element[fill=cyan!30]{FieldBlock}
+        \element[fill=cyan!30]{FieldBlock}
+        \element{FieldBlock}
+        \element{...}
+    \end{arr}
 
 
     %%% FieldBlock
@@ -114,9 +207,22 @@
 
     %%% lines
     \draw[arrow] (hashtable-1.east) to[out=0,in=180] (hashdata1-2.west);
-    \draw[arrow] (hashdata2-2.east) to[out=0,in=180] (class-1.west);
-    \draw[right brace] (class-1.north east) -- node[right note]{class header} (class-2.south east);
+    \draw[arrow] (hashdata2-2.east) to[out=0,in=180] (demo-1.west);
+    \draw[right brace] (demo-1.north east) -- node[right note]{object header} (demo-2.south east);
+    \draw[arrow] (demo-2.east) to[out=-45,in=-120] (class-1.west);
+    \draw[arrow] (object-2.west) to[out=120,in=-120] (class-1.west);
+    \draw[arrow] (idemo-2.west) to[out=120,in=-120] (class-1.west);
+    \draw[arrow] (interface-array-2.center) to[out=90,in=-90] (idemo.south);
+    \draw[arrow] (method-table-1.center) to[out=-90,in=110] (method-array-2.north);
+    \draw[arrow] (method-table-4.center) to[out=-90,in=90] (method-array-1.north);
+    \draw[arrow] (demo-26.east) to[out=0,in=180] (constant-pool-1.west);
+    \draw[arrow] (constant-pool-1) to[] (constant-pool-type);
+    \draw[arrow] (constant-pool-2) to[] (constant-pool-info);
+    \draw[arrow] (demo-22) to[] (interface-array);
+    \draw[arrow] (demo-23) to[] (interface-table);
+    \draw[arrow] (demo-24) to[] (method-table);
+    \draw[arrow] (demo-union-right-2) to[] (method-array);
+    \draw[arrow] (demo-union-right-3) to[] (field-array);
+%    \draw[arrow] () to[] ();
 \end{tikzpicture}
 \end{document}
-
-
