@@ -49,6 +49,10 @@
         \node[label=below:\tiny{\the\numexpr\index-1\relax},fixed node={\diaWidth}{\diaHeight},right=of \lastId, ##1](\id){##2};
         \updateIndex
     }
+    \newcommand{\elem}[2][]{
+        \node[fixed node={\diaWidth}{\diaHeight},right=of \lastId, ##1](\id){##2};
+        \updateIndex
+    }
     %% dummy node for label(title)
     \node[draw,fixed node={0em}{\diaHeight},label={[name=\diaName-label]180:{\bf #1}},#2](\id){};\updateIndex
 }

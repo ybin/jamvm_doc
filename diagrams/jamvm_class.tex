@@ -86,7 +86,13 @@
 
 
     %%% Class object: cc.ybin.IDemo
-    \begin{struct}[class object~(cc.ybin.IDemo)][below=3cm of object]{idemo}{5cm}{2em}
+    \begin{struct}[class object~(cc.ybin.IDemo)][below=2cm of object]{idemo}{5cm}{2em}
+        \record[fill=blue!30]{uintptr_t lock;}
+        \record[fill=blue!30]{Class *class;}
+        \record{......}
+    \end{struct}
+    %%% Class object: cc.ybin.IDemo2
+    \begin{struct}[class object~(cc.ybin.IDemo2)][right=1cm of idemo.north east]{idemo2}{5cm}{2em}
         \record[fill=blue!30]{uintptr_t lock;}
         \record[fill=blue!30]{Class *class;}
         \record{......}
@@ -94,70 +100,77 @@
 
 
     %%% interfaces
-    \begin{arr}[][right=3cm of demo-22]{interface-array}
+    \begin{arr}[][below=1cm of idemo.south east]{interface-array}
         \element{}
         \element{}
-        \element{}
-        \element{...}
     \end{arr}
 
 
     %%% interface table
-    \begin{arr}[][right=3cm of demo-23]{interface-table}
-        \element{}
-        \element{}
-        \element{}
-        \element{...}
+    \begin{arr}[][right=3cm of demo-23]{interface-table}[9em][2em]
+        \elem[fill=cyan!30]{imethod table}
+        \elem[fill=cyan!50]{Class *interface;}
+        \elem[fill=gray!30]{Class *interface;}
+    \end{arr}
+    \begin{arr}[][below=of interface-table-0]{interface-table-x}[9em][2em]
+        \element[fill=cyan!30]{from parent}
+        \element[fill=cyan!50]{int *offset;}
+        \element[fill=gray!30]{int *offset;}
     \end{arr}
 
 
     %%% method table
-    \begin{arr}[][right=3cm of demo-24]{method-table}
+    \begin{arr}[][below=2cm of interface-table.south west]{method-table}
         \element[fill=cyan!30]{}
-        \element[fill=cyan!30]{}
-        \element[fill=cyan!30]{}
+        \element[fill=cyan!30]{...}
         \element{}
-        \element{...}
     \end{arr}
 
-
-    %%% constant pool
-    \begin{struct}[ConstantPool][right=7cm of demo-26]{constant-pool}{5cm}{2em}
-        \record{volatile u1 *type;}
-        \record{ConstantPoolEntry *info;}
-    \end{struct}
-
-    %%% constant pool type
-    \begin{arr}[][right=3cm of constant-pool-1]{constant-pool-type}
-        \element{}
-        \element{}
-        \element{}
-        \element{...}
-    \end{arr}
-
-    %%% constant pool info
-    \begin{arr}[][right=3cm of constant-pool-2]{constant-pool-info}
-        \element{}
-        \element{}
-        \element{}
-        \element{...}
+    %%% interface method table
+    \begin{arr}[][right=2cm of method-table]{imethod-table}
+        \element[fill=cyan!30]{...}
+        \element[fill=cyan!50]{}
+        \element[fill=cyan!50]{}
+        \element[fill=gray!30]{}
     \end{arr}
 
 
     %%% methods
     \begin{arr}[][right=3cm of demo-union-right-2]{method-array}[8em][2em]
-        \element{MethodBlock}
-        \element{MethodBlock}
-        \element{...}
+        \element[inner sep=0.3em]{private void\\ print()}
+        \element[inner sep=0.3em,fill=cyan!30]{public String\\ toString()}
+        \element[inner sep=0.3em,fill=cyan!50]{public void\\ demo()}
+        \element[inner sep=0.3em,fill=cyan!50]{public void\\ idemo()}
+        \element[inner sep=0.3em,fill=gray!30]{public void\\ demo2()}
     \end{arr}
 
 
     %%% fields
-    \begin{arr}[][right=3cm of demo-union-right-3]{field-array}[8em][2em]
+    \begin{arr}[][below=1cm of method-array.south west]{field-array}[8em][2em]
         \element[fill=cyan!30]{FieldBlock}
-        \element[fill=cyan!30]{FieldBlock}
-        \element[fill=cyan!30]{FieldBlock}
+        \element[fill=cyan!30]{...}
         \element{FieldBlock}
+        \element{...}
+    \end{arr}
+
+
+    %%% constant pool
+    \begin{struct}[ConstantPool][below=2cm of field-array.south west,anchor=north west]{constant-pool}{5cm}{2em}
+        \record{volatile u1 *type;}
+        \record{ConstantPoolEntry *info;}
+    \end{struct}
+    %%% constant pool type
+    \begin{arr}[][right=1cm of constant-pool-1]{constant-pool-type}
+        \element{}
+        \element{}
+        \element{}
+        \element{...}
+    \end{arr}
+    %%% constant pool info
+    \begin{arr}[][right=1cm of constant-pool-2]{constant-pool-info}
+        \element{}
+        \element{}
+        \element{}
         \element{...}
     \end{arr}
 
@@ -212,17 +225,29 @@
     \draw[arrow] (demo-2.east) to[out=-45,in=-120] (class-1.west);
     \draw[arrow] (object-2.west) to[out=120,in=-120] (class-1.west);
     \draw[arrow] (idemo-2.west) to[out=120,in=-120] (class-1.west);
-    \draw[arrow] (interface-array-2.center) to[out=90,in=-90] (idemo.south);
+    \draw[arrow] (interface-array-1.center) to[out=90,in=-90] (idemo.south);
+    \draw[arrow] (interface-array-2.center) to[out=90,in=-90] (idemo2.south);
     \draw[arrow] (method-table-1.center) to[out=-90,in=110] (method-array-2.north);
-    \draw[arrow] (method-table-4.center) to[out=-90,in=90] (method-array-1.north);
-    \draw[arrow] (demo-26.east) to[out=0,in=180] (constant-pool-1.west);
+    \draw[arrow] (method-table-3.center) to[out=-90,in=90] (method-array-1.north);
+    \draw[arrow] (demo-27.east) to[out=0,in=180] (constant-pool-1.west);
     \draw[arrow] (constant-pool-1) to[] (constant-pool-type);
     \draw[arrow] (constant-pool-2) to[] (constant-pool-info);
-    \draw[arrow] (demo-22) to[] (interface-array);
-    \draw[arrow] (demo-23) to[] (interface-table);
-    \draw[arrow] (demo-24) to[] (method-table);
+    \draw[arrow] (demo-21.east) to[out=30,in=200] (object-1.west);
+    \draw[arrow] (demo-22.east) to[out=0,in=180] (interface-array.west);
+    \draw[arrow] (demo-23.east) to[out=0,in=180] (interface-table.west);
+    \draw[arrow] (demo-24.east) to[out=0,in=180] (method-table.west);
     \draw[arrow] (demo-union-right-2) to[] (method-array);
-    \draw[arrow] (demo-union-right-3) to[] (field-array);
+    \draw[arrow] (demo-union-right-3.east) to[out=0,in=180] (field-array.west);
+    
+    \draw[arrow] (interface-table-2.north) to[out=90,in=-90] (idemo.south);
+    \draw[arrow] (interface-table-3.north) to[out=90,in=-90] (idemo2.south);
+    \draw[arrow] (interface-table-x-1.south) to[out=-90,in=90] (imethod-table-1.north);
+    \draw[arrow] (interface-table-x-2.south) to[out=-90,in=90] (imethod-table-2.north);
+    \draw[arrow] (interface-table-x-3.south) to[out=-90,in=90] (imethod-table-4.north);
+    \draw[arrow] (imethod-table-2.center) to[out=-90,in=90] (method-array-3);
+    \draw[arrow] (imethod-table-3.center) to[out=-90,in=90] (method-array-4);
+    \draw[arrow] (imethod-table-4.center) to[out=-90,in=90] (method-array-5);
+
 %    \draw[arrow] () to[] ();
 \end{tikzpicture}
 \end{document}
