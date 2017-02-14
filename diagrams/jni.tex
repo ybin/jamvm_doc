@@ -1,0 +1,42 @@
+\documentclass[border=10pt]{standalone}
+\input{config}
+
+\begin{document}
+\begin{tikzpicture}
+
+    \begin{arr}[global_refs][]{global-tab-array}[4em][1.5em]
+        \element{strong}
+        \element{weak}
+        \element{cleared}
+    \end{arr}
+
+    \begin{struct}[GlobalRefTable][below=2cm of global-tab-array]{global-tab}{10em}{2em}
+        \record{Object **table;}
+        \record{int size;}
+        \record{int next;}
+        \record{int has_deleted;}
+        \record{VMLock lock;}
+    \end{struct}
+    
+    \begin{arr}[][right=1cm of global-tab]{table}
+        \elem{}
+        \elem{}
+        \elem{}
+        \elem[label=below:\tiny{next}]{}
+        \elem{...}
+        \elem[label=below:\tiny{size-1}]{}
+    \end{arr}
+    
+    \node[yshift=2em](obj0) at (table-2.north east) {object};
+    \node[yshift=2em](obj1) at (table-4.north east) {object};
+
+
+    %%% lines
+    \draw[dotted] (global-tab-array-2.south west) to[] (global-tab-1.north west);
+    \draw[dotted] (global-tab-array-2.south east) to[] (global-tab-1.north east);
+    \draw[arrow] (global-tab-1.east) to [out=0,in=180] (table.west);
+    \draw[arrow] (table-2.center) to[out=90,in=-90] (obj0.south);
+    \draw[arrow] (table-4.center) to[out=90,in=-90] (obj1.south);
+
+\end{tikzpicture}
+\end{document}
