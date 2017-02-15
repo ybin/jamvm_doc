@@ -1,0 +1,165 @@
+\documentclass[border=10pt]{standalone}
+\input{config}
+
+\begin{document}
+\begin{tikzpicture}
+
+    \begin{struct}[tvm_t]{vm}{14em}{2em}
+        \record{tvm_program_t* pProgram;}
+        \record{tvm_memory_t* pMemory;}
+    \end{struct}
+    
+    %%% program
+    \begin{struct}[tvm_program_t][below=2cm of vm.south west]{program}{10em}{2em}
+        \record{int start;}
+        \record[minimum height=3em]{int \\ num_instructions;}
+        \record{int* instr;}
+        \record{int*** args;}
+        \record{int** values;}
+        \record{int num_values;}
+        \record[minimum height=3em]{tvm_htab_t* \\ label_htab;}
+    \end{struct}
+    %%% instructions
+    \begin{arr}[instr][right=2cm of program-0.east]{instructions}[3em][1.5em]
+        \elem{nop}
+        \elem{mov}
+        \elem{push}
+        \elem{pop}
+        \elem{...}
+    \end{arr}
+    %%% args of instructions
+    \begin{struct}[args of instr][below=1cm of instructions.south west,anchor=west]{args}{2em}{2em}
+        \record{}
+        \record{}
+        \record{}
+        \record{}
+        \record{...}
+    \end{struct}
+    %%% args level 2
+    \begin{arr}[][right=1cm of args-1]{args-p1}{}{}
+        \elem{}
+        \elem{}
+    \end{arr}
+    \begin{arr}[][right=1cm of args-2]{args-p2}{}{}
+        \elem{}
+        \elem{}
+    \end{arr}
+    \begin{arr}[][right=1cm of args-3]{args-p3}{}{}
+        \elem{}
+        \elem{}
+    \end{arr}
+    \begin{arr}[][right=1cm of args-4]{args-p4}{}{}
+        \elem{}
+        \elem{}
+    \end{arr}    
+    
+    %%% values
+    \begin{struct}[rt values][below=1cm of args.south west,anchor=west]{values}{2em}{2em}
+        \record{}
+        \record{}
+        \record{}
+        \record{}
+        \record{...}
+    \end{struct}
+    %%% values level 2
+    \begin{arr}[][right=1cm of values-1]{values-p1}{}{}
+        \elem{int}
+    \end{arr}
+    \begin{arr}[][right=1cm of values-2]{values-p2}{}{}
+        \elem{int}
+    \end{arr}
+    \begin{arr}[][right=1cm of values-3]{values-p3}{}{}
+        \elem{int}
+    \end{arr}
+    \begin{arr}[][right=1cm of values-4]{values-p4}{}{}
+        \elem{int}
+    \end{arr}
+    \node[align=center,fill=red!10,right=1cm of values-p2.east](value note) {intermediate number or\\ label addr(instruct number)};
+    
+    
+    %%% hash table
+    \begin{struct}[tvm_htab_t][below=1cm of values.south west,anchor=west]{hashtab}{11em}{2em}
+        \record{int num_nodes;}
+        \record[minimum height=3em]{tvm_htable_node_t* \\ nodes[HTAB_SIZE];}
+    \end{struct}
+    
+    \begin{arr}[][right=1cm of hashtab-2.east]{nodes}
+        \elem{}
+        \elem{}
+        \elem{}
+        \elem{...}
+    \end{arr}
+    \begin{struct}[][below=of nodes-2.south,yshift=2.5cm]{node-type}{6em}{2em}
+        \record{char* key;}
+        \record{int value;}
+    \end{struct}
+    \node[right addr note,fill=red!10] at (node-type-1.east) {label name};
+    \node[right addr note,fill=red!10] at (node-type-2.east) {label addr(instruct number)};
+    
+    
+    %%% memory
+    \begin{struct}[tvm_memory_t][right=3cm of vm.north east,yshift=2cm]{memory}{9em}{2em}
+        \record{int FLAGS;}
+        \record{int remainder;}
+        \record{void* mem_space;}
+        \record[minimum height=3em]{tvm_register_t* \\ register;}
+    \end{struct}
+    \begin{struct}[memory][right=2cm of memory-4]{mem}{4em}{1.5em}
+        \record{}
+        \record{}
+        \record{}
+        \record{...}
+        \record[fill=cyan!30]{}
+        \record[fill=cyan!30]{}
+        \record[fill=cyan!30]{}
+    \end{struct}
+    \begin{struct}[registers][below=2cm of mem]{registers}{3em}{1.5em}
+        \record{eax}
+        \record{ebx}
+        \record{ecx}
+        \record{edx}
+        \record{esi}
+        \record{edi}
+        \record{esp}
+        \record{ebp}
+        \record{eip}
+        \record{...}
+    \end{struct}
+    
+    
+    %%% lines
+    \draw[right brace] (mem-5.north east) --node[right note]{stack\tiny{~(2MB)}} (mem-7.south east);
+    \node[right addr note] at (mem-7.south east) {\tiny{0}};
+    \node[right addr note] at (mem-1.north east) {\tiny{64MB}};
+    \draw[arrow] (memory-3.east) to[out=0,in=180] (mem-1.west);
+    \draw[arrow] (memory-4.east) to[out=0,in=180] (registers-1.west);
+    
+    \draw[arrow] (vm-1.west) to[out=180,in=90] (program-label);
+    \draw[arrow] (vm-2.east) to[out=0,in=180] (memory-1.west);
+    
+    \draw[arrow] (program-3.east) to[out=60,in=220] (instructions.west);
+    \draw[arrow] (program-4.east) to[out=30,in=180] (args-1.west);
+    \draw[arrow] (program-5.east) to[out=0,in=180] (values-1.west);
+    \draw[arrow] (program-7.east) to[out=-60,in=140] (hashtab-1.west);
+    
+    \draw[arrow] (args-1.center) to[] (args-p1.west);
+    \draw[arrow] (args-2.center) to[] (args-p2.west);
+    \draw[arrow] (args-3.center) to[] (args-p3.west);
+    \draw[arrow] (args-4.center) to[] (args-p4.west);
+    
+    \draw[arrow] (values-1.center) to[] (values-p1.west);
+    \draw[arrow] (values-2.center) to[] (values-p2.west);
+    \draw[arrow] (values-3.center) to[] (values-p3.west);
+    \draw[arrow] (values-4.center) to[] (values-p4.west);
+    
+    \draw[arrow] (hashtab-2.east) to[] (nodes.west);
+    \draw[arrow] (nodes-1.center) to[out=90,in=180] (node-type-1.west);
+    
+    \draw[arrow,dashed] (args-p1-2.center) to[out=0,in=180] (mem-3.west);
+    \draw[arrow,dashed] (args-p2-2.center) to[out=0,in=180] (registers-3.west);
+    \draw[arrow,dashed] (args-p4-2.center) to[out=-90,in=90] (values-p1.north);
+    
+    \draw[arrow,draw=gray,dashed] (value note.west) to (values-p2.east);
+
+\end{tikzpicture}
+\end{document} 

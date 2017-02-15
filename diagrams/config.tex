@@ -19,11 +19,6 @@
         \node[fixed node={\diaWidth}{\diaHeight},below=of \lastId, ##1](\id){##2};
         \updateIndex
     }
-    %% \element[style for node]{node content}
-    \newcommand{\element}[2][]{
-        \node[fixed node={\diaWidth}{\diaHeight},right=of \lastId, ##1](\id){##2};
-        \updateIndex
-    }
     %% dummy node for label(title)
     \node[draw,fixed node={\diaWidth}{0em},label={[name=\diaName-label,yshift=0.5em]\textbf{#1}},#2](\id){};\updateIndex
 }
