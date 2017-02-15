@@ -1,0 +1,82 @@
+\documentclass[border=10pt]{standalone}
+\input{../config}
+
+\newcount\tmpstart
+\def\addr#1{physic-\the\numexpr\tmpstart+#1\relax}
+\def\addrv#1{virtual-\the\numexpr\tmpstart+#1\relax}
+
+\begin{document}
+\begin{tikzpicture}
+
+\begin{struct}[Physical Memory][]{physic}{9em}{3em}
+    % kernel layout
+    \record[fill=gray!20]{...}
+    \record[minimum height=8em]{kemm area}
+    \record[minimum height=5em]{kmem area}
+    \record{bss}
+    \record{data}
+    \record{text \& rodata}
+    %%%
+    \record[fill=gray!20,minimum height=5em]{...}
+    % boot sector
+    \record[fill=gray!20]{}
+    \record[fill=gray!30]{gdt addr~(4byte)}
+    \record[fill=gray!30]{size~(2byte)}
+    \record[fill=cyan!30]{data selector}
+    \record[fill=cyan!30]{code selector}
+    \record[fill=cyan!30]{null selector}
+    \record[fill=gray!20,minimum height=5em]{code of \\ boot loader}
+    \record[fill=blue!30,minimum height=3em]{boot stack}
+    \record[fill=gray!20]{...}
+\end{struct}
+
+\begin{struct}[Virtual Memory][right=8cm of physic.north,yshift=10em]{virtual}{9em}{3em}
+    % kernel layout
+    \record[fill=gray!20]{...}
+    \record[minimum height=8em]{kemm area}
+    \record[minimum height=5em]{kmem area}
+    \record{bss}
+    \record{data}
+    \record{text \& rodata}
+    \record[minimum height=4em,fill=red!10]{}
+    \record[fill=gray!20,minimum height=40em]{}
+\end{struct}
+
+
+%%% lines
+\tmpstart=1
+\node[right addr note] at (\addrv{1}.north east) {KERNBASE+PHYTOP(224MB)};
+\node[right addr note] at (\addrv{2}.north east) {KERNBASE+EXTMEM(4MB)};
+\node[right addr note] at (\addrv{3}.north east) {end};
+\node[right addr note] at (\addrv{4}.north east) {edata};
+\node[right addr note] at (\addrv{4}.south east) {data};
+\node[right addr note] at (\addrv{5}.south east) {KERNBASE+1MB};
+\node[right addr note] at (\addrv{6}.south east) {KERNBASE(2GB)};
+\node[right addr note] at (virtual.south east) {0};
+\node[right addr note] at (virtual.north east) {4GB};
+\draw[left brace] (\addr{3}.north west) -- node[left note]{kernel img} (\addr{5}.south west);
+\draw[left brace] (\addr{1}.north west) -- node[left note]{dynamic memory} (\addr{2}.south west);
+
+\node[right addr note] at (\addr{5}.south east) {1MB};
+\node[right addr note] at (\addr{2}.north east) {EXTMEM(4MB)};
+\node[right addr note] at (\addr{1}.north east) {PHYTOP(224MB)};
+
+%
+\draw[dashed] (\addrv{1}.north west) to (\addr{1}.north east);
+\draw[dashed] (\addrv{6}.north west) to (\addr{6}.north east);
+\draw[dashed] (\addrv{6}.south west) to (\addr{15}.south east);
+
+
+% boot sector
+\tmpstart=7
+\node[right addr note] at (physic.south east) {0};
+\node[right addr note] at (physic.north east) {phyiscal size};
+\node[right addr note] at (\addr{8}.south east) {0x7c00};
+\node[right addr note] at (\addr{1}.north east) {0x7c00 + 512};
+\draw[right brace] (\addr{2}.north east) -- node[right note] {GDT descriptor} (\addr{3}.south east);
+\draw[right brace] (\addr{4}.north east) -- node[right note] {GDT} (\addr{6}.south east);
+\draw[left brace] (\addr{1}.north west) -- node[left note] {boot sector(512B)} (\addr{7}.south west);
+\draw[arrow] (\addr{8}.north) to ([yshift=-1em]\addr{8}.north);
+
+\end{tikzpicture}
+\end{document}
