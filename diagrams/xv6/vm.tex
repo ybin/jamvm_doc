@@ -1,0 +1,89 @@
+\documentclass[border=10pt]{standalone}
+\input{../config}
+
+\newcount\tmpstart
+\def\addr#1{physic-\the\numexpr\tmpstart+#1\relax}
+\def\addrv#1{virtual-\the\numexpr\tmpstart+#1\relax}
+
+\begin{document}
+\begin{tikzpicture}
+
+%%% kernel
+\begin{struct}[Virtual Mem~(sched)][]{sched}{9em}{3em}
+    \record[fill=gray!30]{...}
+    \record[minimum height=6em]{} % KERNBASE ~ KERNBASE+PHYTOP
+    \record[fill=gray!30,minimum height=20em]{no user space} % user space
+\end{struct}
+
+%%% physic
+\begin{struct}[Physic Mem][right=4cm of sched.north east,yshift=-7em]{physic}{9em}{3em}
+    \record[fill=gray!30]{...}
+    \record[minimum height=5em]{} % end ~ phytop part 1
+    \record[fill=cyan!30]{} % user mem special
+    \record[minimum height=5em]{} % end ~ phytop part 2
+    \record{kernel img} % 1M ~ end
+    \record{boot, IO space} % 0 ~ 1M
+\end{struct}
+
+%%% proc 1
+\begin{struct}[Virtual Mem~(proc1)][right=12cm of sched.north east]{proc1}{9em}{3em}
+    \record[fill=gray!30]{...}
+    \record[minimum height=6em]{} % KERNBASE ~ KERNBASE+PHYTOP
+    \record[fill=gray!30,minimum height=8.5em]{} % user space 1
+    \record[fill=cyan!30]{} % special user space
+    \record[fill=gray!30,minimum height=8.5em]{} % user space 2
+\end{struct}
+
+%%% proc 2
+\begin{struct}[Virtual Mem~(proc2)][right=4cm of proc1.north east]{proc2}{9em}{3em}
+    \record[fill=gray!30]{...}
+    \record[minimum height=6em]{} % KERNBASE ~ KERNBASE+PHYTOP
+    \record[fill=gray!30,minimum height=8.5em]{} % user space 1
+    \record[fill=cyan!30]{} % special user space
+    \record[fill=gray!30,minimum height=8.5em]{} % user space 2
+\end{struct}
+
+%%% lines
+\node[right addr note] at (physic.south east) {0};
+\node[right addr note] at (physic.north east) {real size};
+\node[right addr note] at (physic-2.north east) {PHYTOP~(224MB)};
+\node[right addr note] at (physic-5.north east) {V2P(end)};
+\node[right addr note] at (physic-6.north east) {1MB};
+
+\node[right addr note] at (sched.north east) {4GB};
+\node[right addr note] at (sched-2.north east) {2GB+224MB};
+\node[right addr note] at (sched-3.north east) {2GB};
+\node[right addr note] at (sched.south east) {0};
+
+\node[right addr note] at (proc1.north east) {4GB};
+\node[right addr note] at (proc1-2.north east) {2GB+224MB};
+\node[right addr note] at (proc1-3.north east) {2GB};
+\node[right addr note] at (proc1.south east) {0};
+
+\node[right addr note] at (proc2.north east) {4GB};
+\node[right addr note] at (proc2-2.north east) {2GB+224MB};
+\node[right addr note] at (proc2-3.north east) {2GB};
+\node[right addr note] at (proc2.south east) {0};
+
+\draw[dashed] (sched-2.north east) -- (physic-2.north west);
+\draw[dashed] (sched-2.south east) -- (physic.south west);
+\draw[dashed,draw=blue] (proc1-2.north west) -- (physic-2.north east);
+\draw[dashed,draw=blue] (proc1-2.south west) -- (physic.south east);
+\draw[dashed,draw=red] (proc2-2.north west) -- (physic-2.north east);
+\draw[dashed,draw=red] (proc2-2.south west) -- (physic.south east);
+
+\draw[dashed,draw=blue] (proc1-4.north west) -- (physic-3.north east);
+\draw[dashed,draw=blue] (proc1-4.south west) -- (physic-3.south east);
+\draw[dashed,draw=red] (proc2-4.north west) -- (physic-3.north east);
+\draw[dashed,draw=red] (proc2-4.south west) -- (physic-3.south east);
+
+\draw[left brace] (physic-2.north west) -- node[left note,align=center]
+ {physical \\page frames} (physic-4.south west);
+ 
+\draw[right brace] (proc2-2.north east) -- node[right note,align=center]
+    {kernel space} (proc2-2.south east);
+\draw[right brace] (proc2-3.north east) -- node[right note,align=center]
+    {user space} (proc2.south east);
+
+\end{tikzpicture}
+\end{document}
