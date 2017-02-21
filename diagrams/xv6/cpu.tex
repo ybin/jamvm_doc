@@ -17,9 +17,9 @@
 
 \begin{struct}[struct cpu][below=1cm of cpus-2.south]{cpu}{12em}{2em}
     \record{uchar apicid;}
-    \record{struct context\\ *scheduler;}
-    \record[minimum height=4em,fill=gray!30]{struct taskstate ts;}
-    \record[minimum height=4em,fill=cyan!30]{struct segdesc gdt[7];}
+    \record[minimum height=3em]{struct context\\ *scheduler;}
+    \record[minimum height=6em,fill=gray!30]{struct taskstate ts;}
+    \record[minimum height=6em,fill=cyan!30]{struct segdesc gdt[7];}
     \record{volatile uint started;}
     \record{int ncli;}
     \record{int intena;}
@@ -67,7 +67,7 @@
     \record{ushort iomb;}
 \end{struct}
 
-\begin{struct}[GDT][left=2cm of cpu-0.west]{gdt}{6em}{2em}
+\begin{struct}[GDT][left=2cm of cpu-0.west,yshift=-7em]{gdt}{6em}{2em}
     \record{NULL}
     \record{seg kcode}
     \record{seg kdata}
@@ -75,6 +75,10 @@
     \record{seg ucode}
     \record{seg udata}
     \record{seg tss}
+\end{struct}
+
+\begin{struct}[virtual mem][left=3cm of gdt-0.west,yshift=20em]{virt}{6em}{2em}
+    \record[fill=gray!30,minimum height=50em]{}
 \end{struct}
 
 
@@ -88,8 +92,18 @@
 \draw[dashed] (cpu-4.north west) -- (gdt.north east);
 \draw[dashed] (cpu-4.south west) -- (gdt.south east);
 
-\draw[arrow] ([xshift=-1em]gdt-4.east) to[out=0,in=180] (cpu-8.north west);
-\draw[arrow] ([xshift=-1em]gdt-7.east) to[out=0,in=180] (cpu-3.north west);
+\node[right addr note] at (virt.south east) {0};
+\node[right addr note] at (virt.north east) {4GB};
+\draw[right brace] (virt.north east) -- node(ptr)[right note] {} (virt.south east);
+\draw[arrow] (gdt-2.west) to[] (ptr);
+\draw[arrow] (gdt-3.west) to[] (ptr);
+\draw[arrow] (gdt-5.west) to[] (ptr);
+\draw[arrow] (gdt-6.west) to[] (ptr);
+
+\draw[left brace] (cpu-3.north west) -- node(p)[left note]{} (cpu-3.south west);
+\draw[left brace] (cpu-8.north west) -- node(q)[left note]{} (cpu-9.south west);
+\draw[arrow] (gdt-4.east) to[] (p);
+\draw[arrow] (gdt-7.east) to[] (q);
 
 \end{tikzpicture}
 \end{document}
