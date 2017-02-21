@@ -1,0 +1,238 @@
+\documentclass[border=10pt]{standalone}
+\input{../config}
+
+\begin{document}
+\begin{tikzpicture}
+
+\begin{struct}[ptable][]{ptable}{9em}{3em}
+    \record{struct spinlock\\ lock;}
+    \record{struct proc\\ proc[64];}
+\end{struct}
+
+\begin{arr}[][right=1cm of ptable-2.east]{table}
+    \elem[label=below:\tiny{0}]{}
+    \elem[label=below:\tiny{1}]{}
+    \elem[label=below:\tiny{2}]{}
+    \elem{...}
+    \elem[label=below:\tiny{63}]{}
+\end{arr}
+
+\begin{struct}[struct proc][below=2cm of table-2]{proc}{9em}{3em}
+    \record{uint sz;}
+    \record{pde_t *pgdir;}
+    \record{char *kstack}
+    \record{enum procstate\\ state;}
+    \record{int pid;}
+    \record{struct proc \\*parent;}
+    \record{struct trapframe \\*tf;}
+    \record{struct context \\*context;}
+    \record{void *chan;}
+    \record{int killed;}
+    \record{struct file\\ *ofile[16];}
+    \record{struct inode \\*cwd;}
+    \record{char name[16];}
+\end{struct}
+
+\begin{struct}[page dir][right=1cm of proc-2.east]{pgdir}{3em}{1em}
+    \record[label=right:\tiny{0}]{}
+    \record[label=right:\tiny{1}]{}
+    \record{...}
+    \record[label=right:\tiny{1023}]{}
+\end{struct}
+
+\begin{arr}[][right=1cm of pgdir-1.east]{pt1}
+    \elem[label=below:\tiny{0}]{}
+    \elem[label=below:\tiny{1}]{}
+    \elem{...}
+    \elem[label=below:\tiny{1023}]{}
+\end{arr}
+\begin{arr}[][right=1cm of pgdir-4.east]{pt2}
+    \elem[label=below:\tiny{0}]{}
+    \elem[label=below:\tiny{1}]{}
+    \elem{...}
+    \elem[label=below:\tiny{1023}]{}
+\end{arr}
+
+\begin{arr}[][below=1cm of pgdir.south]{file-array}
+    \elem[label=below:\tiny{0(stdin)}]{}
+    \elem[label=below:\tiny{1(stdout)}]{}
+    \elem[label=below:\tiny{2(stderr)}]{}
+    \elem[label=below:\tiny{3}]{}
+    \elem{...}
+\end{arr}
+
+\begin{struct}[struct file][below=2cm of file-array.south]{file}{10em}{2em}
+    \record{enum type;}
+    \record{int ref;}
+    \record{char readable;}
+    \record{char writable;}
+    \record{struct pipe *pipe;}
+    \record{struct inode *ip;}
+    \record{uint off;}
+\end{struct}
+
+\begin{struct}[struct pipe][right=2cm of file-5.east,yshift=10em]{pipe}{12em}{2em}
+    \record{struct spinlock lock;}
+    \record{char data[512];}
+    \record{uint nread;}
+    \record{uint nwrite;}
+    \record{int readopen;}
+    \record{int writeopen;}
+\end{struct}
+
+\begin{struct}[struct inode][below=1cm of pipe]{inode}{10em}{2em}
+    \record{uint dev;}
+    \record{uint inum;}
+    \record{int ref;}
+    \record{int flags;}
+    \record{short type;}
+    \record{short major;}
+    \record{short minor;}
+    \record{short nlink;}
+    \record{uint size;}
+    \record{uint addrs[12];}
+\end{struct}
+
+\begin{struct}[kernel stack(proc inited)][left=6cm of proc-0.west]{stack}{8em}{2em}
+    % trap frame
+    \record[fill=gray!30]{ushort pd6;}
+    \record[fill=gray!30]{ushort ss;}
+    \record[fill=gray!30]{uint esp;}
+    \record[fill=gray!30]{uint eflags;}
+    \record[fill=gray!30]{ushort pd5;}
+    \record[fill=gray!30]{ushort cs;}
+    \record[fill=gray!30]{uint eip;}
+    \record[fill=gray!30]{uint err;}
+    \record[fill=gray!30]{uint trapno;}
+    \record[fill=gray!30]{ushort pd4;}
+    \record[fill=gray!30]{ushort ds;}
+    \record[fill=gray!30]{ushort pd3;}
+    \record[fill=gray!30]{ushort es;}
+    \record[fill=gray!30]{ushort pd2;}
+    \record[fill=gray!30]{ushort fs;}
+    \record[fill=gray!30]{ushort pd1;}
+    \record[fill=gray!30]{ushort gs;}
+    \record[fill=gray!30]{uint eax;}
+    \record[fill=gray!30]{uint ecx;}
+    \record[fill=gray!30]{uint edx;}
+    \record[fill=gray!30]{uint ebx;}
+    \record[fill=gray!30]{uint oesp;}
+    \record[fill=gray!30]{uint esi;}
+    \record[fill=gray!30]{uint edi;}
+    % trapret
+    \record{}
+    % context
+    \record[fill=cyan!30]{uint eip;}
+    \record[fill=cyan!30]{uint ebp;}
+    \record[fill=cyan!30]{uint ebx;}
+    \record[fill=cyan!30]{uint esi;}
+    \record[fill=cyan!30]{uint edi;}
+    % normal
+    \record[minimum height=6em]{stack empty}
+\end{struct}
+
+\begin{struct}[kernel stack(e.g. syscal)][left=3cm of stack-0.west]{stack-normal}{8em}{2em}
+    % trap frame
+    \record[fill=gray!30]{ushort pd6;}
+    \record[fill=gray!30]{ushort ss;}
+    \record[fill=gray!30]{uint esp;}
+    \record[fill=gray!30]{uint eflags;}
+    \record[fill=gray!30]{ushort pd5;}
+    \record[fill=gray!30]{ushort cs;}
+    \record[fill=gray!30]{uint eip;}
+    \record[fill=gray!30]{uint err;}
+    \record[fill=gray!30]{uint trapno;}
+    \record[fill=gray!30]{ushort pd4;}
+    \record[fill=gray!30]{ushort ds;}
+    \record[fill=gray!30]{ushort pd3;}
+    \record[fill=gray!30]{ushort es;}
+    \record[fill=gray!30]{ushort pd2;}
+    \record[fill=gray!30]{ushort fs;}
+    \record[fill=gray!30]{ushort pd1;}
+    \record[fill=gray!30]{ushort gs;}
+    \record[fill=gray!30]{uint eax;}
+    \record[fill=gray!30]{uint ecx;}
+    \record[fill=gray!30]{uint edx;}
+    \record[fill=gray!30]{uint ebx;}
+    \record[fill=gray!30]{uint oesp;}
+    \record[fill=gray!30]{uint esi;}
+    \record[fill=gray!30]{uint edi;}
+    \record[minimum height=6em]{stack empty}
+\end{struct}
+
+\begin{struct}[struct trapframe][left=3cm of stack-normal-0.west]{trapframe}{8em}{2em}
+    \record[fill=gray!30]{uint edi;}
+    \record[fill=gray!30]{uint esi;}
+    \record[fill=gray!30]{uint oesp;}
+    \record[fill=gray!30]{uint ebx;}
+    \record[fill=gray!30]{uint edx;}
+    \record[fill=gray!30]{uint ecx;}
+    \record[fill=gray!30]{uint eax;}
+    \record[fill=gray!30]{ushort gs;}
+    \record[fill=gray!30]{ushort pd1;}
+    \record[fill=gray!30]{ushort fs;}
+    \record[fill=gray!30]{ushort pd2;}
+    \record[fill=gray!30]{ushort es;}
+    \record[fill=gray!30]{ushort pd3;}
+    \record[fill=gray!30]{ushort ds;}
+    \record[fill=gray!30]{ushort pd4;}
+    \record[fill=gray!30]{uint trapno;}
+    \record[fill=gray!30]{uint err;}
+    \record[fill=gray!30]{uint eip;}
+    \record[fill=gray!30]{ushort cs;}
+    \record[fill=gray!30]{ushort pd5;}
+    \record[fill=gray!30]{uint eflags;}
+    \record[fill=gray!30]{uint esp;}
+    \record[fill=gray!30]{ushort ss;}
+    \record[fill=gray!30]{ushort pd6;}
+\end{struct}
+
+\begin{struct}[struct context][below=1cm of stack-normal]{context}{8em}{2em}
+    \record[fill=cyan!30]{uint edi;}
+    \record[fill=cyan!30]{uint esi;}
+    \record[fill=cyan!30]{uint ebx;}
+    \record[fill=cyan!30]{uint ebp;}
+    \record[fill=cyan!30]{uint eip;}
+\end{struct}
+
+%%% lines
+\draw[arrow] (ptable-2.east) to[] (table.west);
+\draw[dashed] (table-2.south west) -- (proc.north west);
+\draw[dashed] (table-2.south east) -- (proc.north east);
+\draw[arrow] (proc-2.east) to[out=0,in=180] (pgdir-1.west);
+\draw[arrow] (proc-11.east) to[out=0,in=180] (file-array.west);
+\draw[arrow] (file-array-1.center) to[out=-90,in=180] (file-1.west);
+\draw[arrow] (file-5.east) to[out=0,in=180] (pipe-1.west);
+\draw[arrow] (file-6.east) to[out=0,in=180] (inode-1.west);
+
+\draw[arrow] (pgdir-1.center) to[] (pt1.west);
+\draw[arrow] (pgdir-4.center) to[] (pt2.west);
+\node[fill=red!10] (pte) at ([yshift=3em]pt1-4) {physical page frame};
+\draw[arrow] (pt1-2.center) to[out=90,in=180] (pte.west);
+
+\draw[arrow] (proc-7.west) to[out=180,in=0] (stack-24.south east);
+\draw[arrow] (proc-8.west) to[out=240,in=0] (stack-30.south east);
+
+\draw[dashed] (trapframe.north east) -- (stack-normal-24.south west);
+\draw[dashed] (trapframe.south east) -- (stack-normal.north west);
+
+\draw[dashed] (context.north east) -- (stack-30.south west);
+\draw[dashed] (context.south east) -- (stack-26.north west);
+
+\draw[right brace] (stack-1.north east) -- node[right note]{set by hardware} (stack-8.south east);
+\draw[right brace] (stack-18.north east) -- node[right note]{pushal/popal} (stack-24.south east);
+\draw[right brace] (stack-26.north east) -- node[right note]{used by 'swtch'} (stack-30.south east);
+
+\node[right addr note] at (stack-9.east) {push in interrupt handler};
+\draw[arrow] (stack-25.center) to[] ([xshift=2em]stack-25.east)
+    node[anchor=west,fill=red!10] {function 'trapret'};
+\draw[arrow] ([xshift=-1em]stack-26.east) to[] ([xshift=2em]stack-26.east)
+    node[anchor=west,fill=red!10] {function 'forkret'};
+    
+\draw[arrow] (stack-31.north) to[] ([yshift=-2em]stack-31.north);
+\draw[arrow] (stack-normal-25.north) to[] ([yshift=-2em]stack-normal-25.north);
+%\draw[arrow] () to[] ();
+
+
+\end{tikzpicture}
+\end{document}

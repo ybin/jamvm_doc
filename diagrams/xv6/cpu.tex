@@ -1,0 +1,95 @@
+\documentclass[border=10pt]{standalone}
+\input{../config}
+
+\newcount\tmpstart
+\def\addr#1{physic-\the\numexpr\tmpstart+#1\relax}
+\def\addrv#1{virtual-\the\numexpr\tmpstart+#1\relax}
+
+\begin{document}
+\begin{tikzpicture}
+
+\begin{arr}[cpus][]{cpus}
+    \elem{}
+    \elem{}
+    \elem{}
+    \elem{...}
+\end{arr}
+
+\begin{struct}[struct cpu][below=1cm of cpus-2.south]{cpu}{12em}{2em}
+    \record{uchar apicid;}
+    \record{struct context\\ *scheduler;}
+    \record[minimum height=4em,fill=gray!30]{struct taskstate ts;}
+    \record[minimum height=4em,fill=cyan!30]{struct segdesc gdt[7];}
+    \record{volatile uint started;}
+    \record{int ncli;}
+    \record{int intena;}
+    \record[fill=gray!30]{struct cpu *cpu;}
+    \record[fill=gray!30]{struct proc *proc;}
+\end{struct}
+
+\begin{struct}[struct taskstate][right=3cm of cpu-3.east,yshift=25em]{taskstate}{10em}{2em}
+    \record{uint link;}
+    \record[minimum height=3em]{uint esp0;\\(kernel stack)}
+    \record{ushort ss0;}
+    \record{ushort padding1;}
+    \record{uint *esp1;}
+    \record{ushort ss1;}
+    \record{ushort padding2;}
+    \record{uint *esp2;}
+    \record{ushort ss2;}
+    \record{ushort padding3;}
+    \record{void *cr3;}
+    \record{uint *eip;}
+    \record{uint eflags;}
+    \record{uint eax;}
+    \record{uint ecx;}
+    \record{uint edx;}
+    \record{uint ebx;}
+    \record{uint *esp;}
+    \record{uint *ebp;}
+    \record{uint esi;}
+    \record{uint edi;}
+    \record{ushort es;}
+    \record{ushort padding4;}
+    \record{ushort cs;}
+    \record{ushort padding5;}
+    \record{ushort ss;}
+    \record{ushort padding6;}
+    \record{ushort ds;}
+    \record{ushort padding7;}
+    \record{ushort fs;}
+    \record{ushort padding8;}
+    \record{ushort gs;}
+    \record{ushort padding9;}
+    \record{ushort ldt;}
+    \record{ushort padding10;}
+    \record{ushort t;}
+    \record{ushort iomb;}
+\end{struct}
+
+\begin{struct}[GDT][left=2cm of cpu-0.west]{gdt}{6em}{2em}
+    \record{NULL}
+    \record{seg kcode}
+    \record{seg kdata}
+    \record{seg kcpu}
+    \record{seg ucode}
+    \record{seg udata}
+    \record{seg tss}
+\end{struct}
+
+
+%%% lines
+\draw[dashed] (cpus-2.south west) -- (cpu.north west);
+\draw[dashed] (cpus-2.south east) -- (cpu.north east);
+
+\draw[dashed] (cpu-3.north east) -- (taskstate.north west);
+\draw[dashed] (cpu-3.south east) -- (taskstate.south west);
+
+\draw[dashed] (cpu-4.north west) -- (gdt.north east);
+\draw[dashed] (cpu-4.south west) -- (gdt.south east);
+
+\draw[arrow] ([xshift=-1em]gdt-4.east) to[out=0,in=180] (cpu-8.north west);
+\draw[arrow] ([xshift=-1em]gdt-7.east) to[out=0,in=180] (cpu-3.north west);
+
+\end{tikzpicture}
+\end{document}
