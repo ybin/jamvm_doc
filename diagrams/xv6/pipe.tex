@@ -1,0 +1,84 @@
+\documentclass[border=10pt]{standalone}
+\input{../config}
+
+
+\begin{document}
+\begin{tikzpicture}
+
+\begin{arr}[shell][]{shell-ofile}
+    \elem[label=below:\tiny{stdin}]{}
+    \elem[label=below:\tiny{stdout}]{}
+    \elem[label=below:\tiny{stderr}]{}
+    \elem{...}
+    \elem[label=below:\tiny{wt-fd}]{X}
+    \elem[label=below:\tiny{rd-fd}]{X}
+\end{arr}
+
+\begin{arr}[writer][left=3cm of shell-ofile.west,yshift=-3em]{writer-ofile}
+    \elem[label=below:\tiny{stdin}]{}
+    \elem[label=below:\tiny{stdout}]{}
+    \elem[label=below:\tiny{stderr}]{}
+    \elem{...}
+    \elem[label=below:\tiny{wt-fd}]{X}
+    \elem[label=below:\tiny{rd-fd}]{X}
+\end{arr}
+
+\begin{struct}[struct file(for writing)][below=2cm of writer-ofile.south]{writer-file}{10em}{2em}
+    \record{enum type;(=PIPE)}
+    \record{int ref;}
+    \record{char readable;(=0)}
+    \record{char writable;(=1)}
+    \record{struct pipe *pipe;}
+    \record{struct inode *ip;}
+    \record{uint off;}
+\end{struct}
+
+\begin{arr}[reader][right=2cm of shell-ofile.east,yshift=-3em]{reader-ofile}
+    \elem[label=below:\tiny{stdin}]{}
+    \elem[label=below:\tiny{stdout}]{}
+    \elem[label=below:\tiny{stderr}]{}
+    \elem{...}
+    \elem[label=below:\tiny{wt-fd}]{X}
+    \elem[label=below:\tiny{rd-fd}]{X}
+\end{arr}
+
+\begin{struct}[struct file(for reading)][below=2cm of reader-ofile.south]{reader-file}{10em}{2em}
+    \record{enum type;(=PIPE)}
+    \record{int ref;}
+    \record{char readable;(=1)}
+    \record{char writable;(=0)}
+    \record{struct pipe *pipe;}
+    \record{struct inode *ip;}
+    \record{uint off;}
+\end{struct}
+
+% pipe
+\begin{struct}[struct pipe][below=2cm of writer-file,xshift=17em]{pipe}{12em}{2em}
+    \record{struct spinlock lock;}
+    \record{char data[512];}
+    \record{uint nread;}
+    \record{uint nwrite;}
+    \record{int readopen;}
+    \record{int writeopen;}
+\end{struct}
+
+
+%%% lines
+%\draw[arrow,dashed] (shell-ofile-5.center) to[out=-90,in=45] (writer-file-1.east);
+%\draw[arrow,dashed] (shell-ofile-6.center) to[out=-90,in=145] (reader-file-1.west);
+
+\draw[arrow,dashed] (writer-ofile-5.center) to[out=-90,in=90] (writer-file-1.north);
+\draw[arrow,dashed] (writer-ofile-6.center) to[out=-90,in=145] (reader-file-1.west);
+
+\draw[arrow,dashed] (reader-ofile-5.center) to[out=-130,in=45] (writer-file-1.east);
+\draw[arrow,dashed] (reader-ofile-6.center) to[out=-90,in=0] (reader-file-1.east);
+
+\draw[arrow] (writer-ofile-2.center) to[out=-90,in=180] (writer-file-1.west);
+\draw[arrow] (reader-ofile-1.center) to[out=-90,in=180] (reader-file-1.west);
+
+\draw[arrow] (writer-file-5.east) to[out=0,in=180] (pipe-1.west);
+\draw[arrow] (reader-file-5.west) to[out=180,in=0] (pipe-1.east);
+
+
+\end{tikzpicture}
+\end{document}
